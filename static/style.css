@@ -1,0 +1,8 @@
+body { font-family: Arial, sans-serif; margin: 2em; background: #f8f8fb; }
+h1, h2, h3 { color: #3a3a5a; }
+img { border-radius: 50%; }
+form { margin-top: 1em; margin-bottom: 1em; }
+input, select, button { margin: 0.5em 0.3em; padding: 0.3em; }
+button { border: none; background: #42b983; color: #fff; padding: 0.5em 1.2em; border-radius: 3px; cursor: pointer; }
+button:hover { background: #2e8c6a; }
+div { margin-bottom: 1em; }

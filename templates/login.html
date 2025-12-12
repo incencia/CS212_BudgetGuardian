@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{% if register %}Register{% else %}Login{% endif %}</h2>
+<form method="POST">
+    <label>Username: <input type="text" name="username" required></label><br>
+    <label>Password: <input type="password" name="password" required></label><br>
+    <button type="submit">{% if register %}Register{% else %}Login{% endif %}</button>
+</form>
+<a href="{{ url_for('login') }}">Already have an account? Login</a>
+{% endblock %}
