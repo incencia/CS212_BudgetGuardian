@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for, jsonify
+from flask import Flask, render_template, redirect, request, url_for, jsonify, abort, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -20,6 +20,11 @@ db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+# Allowed file extensions for uploads
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf'}
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -36,8 +41,13 @@ def index():
 def register():
     if request.method == 'POST':
         username = request.form['username']
-        password = generate_password_hash(request.form['password'])
-        user = User(username=username, password_hash=password, budget=1000)  # Default budget
+        password = request.form['password']
+        user_exists = User.query.filter_by(username=username).first()
+        if user_exists:
+            error = f"Username '{username}' is already taken. Please choose a different username."
+            return render_template('login.html', register=True, error=error)
+        password_hash = generate_password_hash(password)
+        user = User(username=username, password_hash=password_hash, budget=1000)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('login'))
@@ -107,15 +117,18 @@ def upload_receipt():
     file = request.files['receipt']
     if file.filename == '':
         return "No selected file", 400
-    # Bug 2: make filename unique per user, and add a UUID
-    ext = os.path.splitext(file.filename)[1]
+    if not allowed_file(file.filename):
+        abort(400, description="Unsupported file extension.")
+    # Sanitize filename
+    filename = secure_filename(file.filename)
+    ext = os.path.splitext(filename)[1]
     unique_filename = f"user{current_user.id}_" + str(uuid.uuid4()) + ext
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
     file.save(file_path)
     reader = easyocr.Reader(['en'])
     results = reader.readtext(file_path, detail=0)
     import re
-    amount = ''  # Bug 3: default to empty string
+    amount = ''
     for line in results:
         match = re.search(r'\d+\.\d{2}', line)
         if match:
@@ -124,4 +137,5 @@ def upload_receipt():
     return redirect(url_for('dashboard', extracted_amount=amount))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    debug_mode = os.environ.get('FLASK_DEBUG', '').lower() in ('1', 'true', 'yes', 'on')
+    app.run(debug=debug_mode)

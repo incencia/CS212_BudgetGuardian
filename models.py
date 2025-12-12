@@ -16,4 +16,4 @@ class Transaction(db.Model):
     amount = db.Column(db.Float, nullable=False)
     type = db.Column(db.String(10))  # 'expense' or 'income'
     category = db.Column(db.String(50))
-    date = db.Column(db.DateTime)
+    date = db.Column(db.DateTime, nullable=False)

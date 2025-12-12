@@ -22,7 +22,7 @@
         <input type="file" name="receipt" accept="image/*" required>
         <button type="submit">Upload Receipt</button>
     </form>
-    {% if extracted_amount and extracted_amount != "None" %}
+    {% if extracted_amount %}
         <div style="margin-top:1em">
             <strong>Detected amount from receipt: ${{ extracted_amount }}</strong>
             <script>
@@ -35,7 +35,7 @@
     <h3>Transactions</h3>
     <ul>
     {% for t in transactions %}
-        <li>${{ t.amount }} ({{ t.category }}) [{{ t.type }}] - {{ t.date.strftime('%Y-%m-%d') }}</li>
+        <li>${{ t.amount }} ({{ t.category }}) [{{ t.type }}] - {% if t.date %}{{ t.date.strftime('%Y-%m-%d') }}{% else %}No Date{% endif %}</li>
     {% endfor %}
     </ul>
 </div>
