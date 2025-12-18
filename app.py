@@ -1,10 +1,8 @@
-from flask import Flask, render_template, redirect, request, url_for, jsonify, abort, flash
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, redirect, request, url_for, jsonify, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import os
-import easyocr
 from werkzeug.utils import secure_filename
 import uuid
 from models import db, User, Transaction
@@ -19,19 +17,20 @@ db.init_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = "login"
+
+# Flask 3.x removed before_first_request; create tables at startup.
+with app.app_context():
+    db.create_all()
 
 # Allowed file extensions for uploads
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
-@app.before_first_request
-def create_tables():
-    db.create_all()
 
 @app.route('/')
 def index():
@@ -63,7 +62,7 @@ def login():
             login_user(user)
             return redirect(url_for('dashboard'))
         else:
-            return "Invalid credentials", 401
+            return render_template('login.html', error="Invalid username or password.")
     return render_template('login.html')
 
 @app.route('/logout')
@@ -125,6 +124,9 @@ def upload_receipt():
     unique_filename = f"user{current_user.id}_" + str(uuid.uuid4()) + ext
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
     file.save(file_path)
+
+    # Lazy import so the app can start even if OCR deps are missing.
+    import easyocr
     reader = easyocr.Reader(['en'])
     results = reader.readtext(file_path, detail=0)
     import re
