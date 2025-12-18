@@ -1,43 +1,141 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Dashboard</h2>
-<div>
-    <img src="{{ url_for('static', filename='pet_images/' + pet_image) }}" width="120" alt="pet emoji">
-    <div>Your pet is feeling: <span style="font-size:2em">{{ emotion }}</span></div>
+<div class="pagehead">
+    <div>
+        <h2 class="pagehead__title">Dashboard</h2>
+        <p class="pagehead__subtitle">Add transactions, upload receipts, and track your budget at a glance.</p>
+    </div>
+    <div class="actions">
+        <a class="btn btn--secondary" href="{{ url_for('logout') }}">Logout</a>
+    </div>
 </div>
-<div>
-    <p>Budget: ${{ budget }}</p>
-    <p>Total Expense: ${{ total_expense }}</p>
-    <p>Net: ${{ net }}</p>
-    <form method="POST" action="{{ url_for('add_transaction') }}">
-        <input name="amount" type="number" step="0.01" placeholder="Amount" required>
-        <input name="category" placeholder="Category" required>
-        <select name="type">
-            <option value="expense">Expense</option>
-            <option value="income">Income</option>
-        </select>
-        <button type="submit">Add</button>
-    </form>
-    <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_receipt') }}">
-        <input type="file" name="receipt" accept="image/*" required>
-        <button type="submit">Upload Receipt</button>
-    </form>
-    {% if extracted_amount %}
-        <div style="margin-top:1em">
-            <strong>Detected amount from receipt: ${{ extracted_amount }}</strong>
-            <script>
-            document.querySelector('input[name="amount"]').value = "{{ extracted_amount }}";
-            </script>
+
+<section class="grid grid--3">
+    <div class="card stat">
+        <div class="stat__label">Budget</div>
+        <div class="stat__value">₱{{ "%.2f"|format(budget or 0) }}</div>
+    </div>
+    <div class="card stat">
+        <div class="stat__label">Total expense</div>
+        <div class="stat__value stat__value--danger">₱{{ "%.2f"|format(total_expense or 0) }}</div>
+    </div>
+    <div class="card stat">
+        <div class="stat__label">Net</div>
+        <div class="stat__value {% if net < 0 %}stat__value--danger{% else %}stat__value--good{% endif %}">
+            ₱{{ "%.2f"|format(net or 0) }}
+        </div>
+    </div>
+</section>
+
+<section class="grid grid--2">
+    <div class="card pet">
+        <div class="pet__media">
+            <img class="pet__img" src="{{ url_for('static', filename='pet_images/' + pet_image) }}" width="120" height="120" alt="Budget pet">
+        </div>
+        <div class="pet__meta">
+            <div class="pet__label">Your pet is feeling</div>
+            <div class="pet__emotion">{{ emotion }}</div>
+            <div class="pet__hint">
+                Keep expenses under budget to stay on track.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 class="card__title">Add a transaction</h3>
+
+        {% if extracted_amount %}
+            <div class="alert alert--info" role="status">
+                Detected amount from receipt: <strong>₱{{ extracted_amount }}</strong>
+            </div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('add_transaction') }}" class="form">
+            <div class="grid grid--2 grid--tight">
+                <div class="form__row">
+                    <label class="label" for="amount">Amount</label>
+                    <input id="amount" class="input" name="amount" type="number" step="0.01" placeholder="0.00" required>
+                </div>
+                <div class="form__row">
+                    <label class="label" for="type">Type</label>
+                    <select id="type" class="input" name="type" required>
+                        <option value="expense">Expense</option>
+                        <option value="income">Income</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form__row">
+                <label class="label" for="category">Category</label>
+                <input id="category" class="input" name="category" placeholder="e.g., Groceries" required>
+            </div>
+
+            <button class="btn btn--primary" type="submit">Add transaction</button>
+        </form>
+
+        <div class="divider"></div>
+
+        <h3 class="card__title">Upload a receipt (optional)</h3>
+        <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_receipt') }}" class="form">
+            <div class="form__row">
+                <label class="label" for="receipt">Receipt image</label>
+                <input id="receipt" class="input" type="file" name="receipt" accept="image/*" required>
+                <div class="help">Tip: clear, well-lit photos work best.</div>
+            </div>
+            <button class="btn btn--secondary" type="submit">Upload & detect amount</button>
+        </form>
+    </div>
+</section>
+
+<section class="card">
+    <div class="card__header">
+        <h3 class="card__title">Transactions</h3>
+        <div class="card__subtitle">{{ transactions|length }} total</div>
+    </div>
+
+    {% if transactions %}
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Category</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for t in transactions %}
+                    <tr>
+                        <td class="mono">₱{{ "%.2f"|format(t.amount or 0) }}</td>
+                        <td>{{ t.category }}</td>
+                        <td>
+                            <span class="badge {% if t.type == 'income' %}badge--good{% else %}badge--danger{% endif %}">
+                                {{ t.type }}
+                            </span>
+                        </td>
+                        <td class="muted">
+                            {% if t.date %}{{ t.date.strftime('%Y-%m-%d') }}{% else %}—{% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty">
+            <div class="empty__title">No transactions yet</div>
+            <div class="empty__subtitle">Add your first income or expense to see it here.</div>
         </div>
     {% endif %}
-</div>
-<div>
-    <h3>Transactions</h3>
-    <ul>
-    {% for t in transactions %}
-        <li>${{ t.amount }} ({{ t.category }}) [{{ t.type }}] - {% if t.date %}{{ t.date.strftime('%Y-%m-%d') }}{% else %}No Date{% endif %}</li>
-    {% endfor %}
-    </ul>
-</div>
-<a href="{{ url_for('logout') }}">Logout</a>
+</section>
+
+{% if extracted_amount %}
+<script>
+(() => {
+    const amountInput = document.getElementById('amount');
+    if (amountInput) amountInput.value = "{{ extracted_amount }}";
+})();
+</script>
+{% endif %}
 {% endblock %}

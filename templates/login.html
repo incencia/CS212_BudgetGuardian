@@ -1,15 +1,54 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>{% if register %}Register{% else %}Login{% endif %}</h2>
-{% if error %}<p style="color: red">{{ error }}</p>{% endif %}
-<form method="POST">
-    <label>Username: <input type="text" name="username" required></label><br>
-    <label>Password: <input type="password" name="password" required></label><br>
-    <button type="submit">{% if register %}Register{% else %}Login{% endif %}</button>
-</form>
-{% if register %}
-<a href="{{ url_for('login') }}">Already have an account? Login</a>
-{% else %}
-<a href="{{ url_for('register') }}">Need an account? Register</a>
-{% endif %}
+<div class="auth">
+    <div class="card auth__card">
+        <h2 class="auth__title">{% if register %}Create your account{% else %}Welcome back{% endif %}</h2>
+        <p class="auth__subtitle">{% if register %}Start tracking your budget in seconds.{% else %}Login to view your dashboard.{% endif %}</p>
+
+        {% if error %}
+            <div class="alert alert--error" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" class="form">
+            <div class="form__row">
+                <label class="label" for="username">Username</label>
+                <input id="username" class="input" type="text" name="username" autocomplete="username" required>
+            </div>
+            <div class="form__row">
+                <label class="label" for="password">Password</label>
+                <input id="password" class="input" type="password" name="password" autocomplete="{% if register %}new-password{% else %}current-password{% endif %}" required>
+            </div>
+
+            <label class="checkrow" for="show_password">
+                <input id="show_password" class="checkrow__box" type="checkbox">
+                <span class="checkrow__label">Show password</span>
+            </label>
+
+            <button class="btn btn--primary btn--full" type="submit">
+                {% if register %}Register{% else %}Login{% endif %}
+            </button>
+        </form>
+
+        <script>
+        (() => {
+            const pw = document.getElementById('password');
+            const cb = document.getElementById('show_password');
+            if (!pw || !cb) return;
+            cb.addEventListener('change', () => {
+                pw.type = cb.checked ? 'text' : 'password';
+            });
+        })();
+        </script>
+
+        <div class="auth__footer">
+            {% if register %}
+                <span>Already have an account?</span>
+                <a class="link" href="{{ url_for('login') }}">Login</a>
+            {% else %}
+                <span>Need an account?</span>
+                <a class="link" href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}
