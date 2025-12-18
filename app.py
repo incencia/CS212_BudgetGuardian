@@ -12,8 +12,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///budget.db'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+# Avoid aggressive static caching while developing (helps CSS changes show up).
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 db.init_app(app)
+app.jinja_env.auto_reload = True
 
 login_manager = LoginManager()
 login_manager.init_app(app)
