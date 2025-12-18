@@ -35,14 +35,16 @@
     <div class="grid grid--2 grid--tight">
       <div class="form__row">
         <label class="label" for="demo_budget">Budget (₱)</label>
-        <input class="input" id="demo_budget" type="number" value="1000" min="0" step="0.01">
+        <input class="input" id="demo_budget" type="number" value="1000" min="0" step="0.01" aria-describedby="demo_budget_link">
         <div class="help">FSM compares spending vs budget.</div>
+        <div class="help demo-link" id="demo_budget_link">Linked to flowchart: <button type="button" class="link-btn" data-jump="budget">Input spending budget</button></div>
       </div>
 
       <div class="form__row">
         <label class="label" for="demo_spent">Spent (₱)</label>
-        <input class="input" id="demo_spent" type="number" value="0" min="0" step="0.01">
+        <input class="input" id="demo_spent" type="number" value="0" min="0" step="0.01" aria-describedby="demo_spent_link">
         <div class="help">Underspend &lt; 80% · On track ≤ 100% · Slight ≤ 105% · Major &gt; 105%</div>
+        <div class="help demo-link" id="demo_spent_link">Linked to flowchart: <button type="button" class="link-btn" data-jump="spent">Input spending</button></div>
       </div>
     </div>
 
@@ -268,6 +270,8 @@
 
   const budgetInput = document.getElementById('demo_budget');
   const spentInput = document.getElementById('demo_spent');
+  const budgetRow = budgetInput?.closest('.form__row');
+  const spentRow = spentInput?.closest('.form__row');
   const img = document.getElementById('demo_pet_img');
   const stateEl = document.getElementById('demo_state');
   const emojiEl = document.getElementById('demo_emoji');
@@ -275,9 +279,25 @@
   const budgetCard = document.getElementById('demo_budget_card');
   const spentCard = document.getElementById('demo_spent_card');
   const emojiCard = document.getElementById('demo_emoji_card');
+  const jumpButtons = Array.from(document.querySelectorAll('[data-jump]'));
 
   const fmt = (n) => (Number.isFinite(n) ? n.toFixed(2) : '0.00');
   let inputFocus = null; // 'budget' | 'spent' | null
+
+  const activateNodeById = (id) => {
+    const n = nodes.find(x => x.id === id);
+    const g = nodeEls.get(id);
+    if (!n || !g) return;
+    for (const el of nodeEls.values()) el.classList.remove('is-active');
+    g.classList.add('is-active');
+    titleEl.textContent = n.title;
+    bodyEl.textContent = n.desc;
+  };
+
+  const setLinkedRow = (which) => {
+    budgetRow?.classList.toggle('is-linked', which === 'budget');
+    spentRow?.classList.toggle('is-linked', which === 'spent');
+  };
 
   const compute = () => {
     const budget = Math.max(0, parseFloat(budgetInput.value || '0'));
@@ -342,16 +362,45 @@
 
     // Highlight resulting state box
     nodeEls.get(state)?.classList.add('is-state');
+
+    // Keep the right-hand inputs visually “linked” to the flowchart
+    setLinkedRow(inputFocus);
   };
 
-  const setFocus = (which) => { inputFocus = which; compute(); };
+  const setFocus = (which) => {
+    inputFocus = which;
+    if (which === 'budget') activateNodeById('budget');
+    if (which === 'spent') activateNodeById('spent');
+    if (which === null) activateNodeById('start');
+    compute();
+  };
+
+  // Input -> flowchart
   budgetInput.addEventListener('focus', () => setFocus('budget'));
   spentInput.addEventListener('focus', () => setFocus('spent'));
   budgetInput.addEventListener('blur', () => setFocus(null));
   spentInput.addEventListener('blur', () => setFocus(null));
-
   budgetInput.addEventListener('input', () => setFocus('budget'));
   spentInput.addEventListener('input', () => setFocus('spent'));
+
+  // Flowchart -> input (click the flow nodes)
+  const focusInputForNode = (id) => {
+    if (id === 'budget') { budgetInput?.focus(); budgetInput?.select?.(); }
+    if (id === 'spent') { spentInput?.focus(); spentInput?.select?.(); }
+  };
+
+  nodeEls.get('budget')?.addEventListener('click', () => focusInputForNode('budget'));
+  nodeEls.get('spent')?.addEventListener('click', () => focusInputForNode('spent'));
+
+  // “Linked to flowchart” helper buttons
+  for (const btn of jumpButtons) {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-jump');
+      if (target === 'budget') focusInputForNode('budget');
+      if (target === 'spent') focusInputForNode('spent');
+    });
+  }
+
   compute();
 })();
 </script>

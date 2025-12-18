@@ -150,6 +150,23 @@ h3 { font-size: 18px; }
 }
 .input::placeholder { color: rgba(255, 255, 255, 0.45); }
 .input:focus { border-color: rgba(79, 140, 255, 0.55); box-shadow: 0 0 0 4px rgba(79, 140, 255, 0.18); }
+.form__row.is-linked .input {
+  border-color: rgba(255, 207, 91, 0.85);
+  box-shadow: 0 0 0 4px rgba(255, 207, 91, 0.16);
+}
+.demo-link { display: flex; gap: 8px; align-items: center; }
+.link-btn {
+  appearance: none;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.88);
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 800;
+}
+.link-btn:hover { background: rgba(255,255,255,0.10); }
 
 /* Layout helpers */
 .grid { display: grid; gap: 14px; }
@@ -366,6 +383,9 @@ h3 { font-size: 18px; }
   stroke: rgba(39, 211, 158, 0.75);
   fill: rgba(39, 211, 158, 0.10);
 }
+/* Make the path highlight feel “linked”, not random */
+.flow__node.is-input .flow__text { fill: rgba(255, 207, 91, 0.95); }
+.flow__node.is-state .flow__text { fill: rgba(39, 211, 158, 0.95); }
 
 /* How it Works: demo FSM */
 .demo-fsm {
