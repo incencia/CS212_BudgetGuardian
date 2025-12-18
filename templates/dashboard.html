@@ -79,11 +79,33 @@
         <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_receipt') }}" class="form">
             <div class="form__row">
                 <label class="label" for="receipt">Receipt image</label>
-                <input id="receipt" class="input" type="file" name="receipt" accept="image/*" required>
+                <input id="receipt" class="input" type="file" name="receipt" accept="image/*" capture="environment" required>
                 <div class="help">Tip: clear, well-lit photos work best.</div>
             </div>
             <button class="btn btn--secondary" type="submit">Upload & detect amount</button>
         </form>
+
+        <div class="divider"></div>
+
+        <h3 class="card__title">Capture with camera (optional)</h3>
+        <div class="camera" id="camera">
+            <div class="actions">
+                <button class="btn btn--secondary" type="button" id="open_camera_btn">Open camera</button>
+                <button class="btn btn--secondary" type="button" id="close_camera_btn" disabled>Close</button>
+            </div>
+            <div class="camera__status muted" id="camera_status">
+                Camera works best on mobile or a webcam-enabled laptop. If prompted, allow camera access.
+            </div>
+
+            <div class="camera__preview" id="camera_preview" hidden>
+                <video class="camera__video" id="camera_video" playsinline autoplay muted></video>
+                <div class="actions">
+                    <button class="btn btn--primary" type="button" id="capture_btn">Capture & upload</button>
+                </div>
+            </div>
+
+            <canvas id="camera_canvas" hidden></canvas>
+        </div>
     </div>
 </section>
 
@@ -138,4 +160,115 @@
 })();
 </script>
 {% endif %}
+
+<script>
+(() => {
+    const uploadUrl = "{{ url_for('upload_receipt') }}";
+
+    const openBtn = document.getElementById('open_camera_btn');
+    const closeBtn = document.getElementById('close_camera_btn');
+    const captureBtn = document.getElementById('capture_btn');
+    const statusEl = document.getElementById('camera_status');
+    const previewEl = document.getElementById('camera_preview');
+    const videoEl = document.getElementById('camera_video');
+    const canvasEl = document.getElementById('camera_canvas');
+
+    if (!openBtn || !closeBtn || !captureBtn || !statusEl || !previewEl || !videoEl || !canvasEl) return;
+
+    let stream = null;
+
+    const setStatus = (msg) => { statusEl.textContent = msg; };
+
+    const stopStream = () => {
+        if (stream) {
+            for (const t of stream.getTracks()) t.stop();
+            stream = null;
+        }
+        previewEl.hidden = true;
+        videoEl.srcObject = null;
+        openBtn.disabled = false;
+        closeBtn.disabled = true;
+    };
+
+    openBtn.addEventListener('click', async () => {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            setStatus("Camera not supported in this browser.");
+            return;
+        }
+
+        try {
+            setStatus("Requesting camera permission…");
+            stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: { ideal: "environment" } },
+                audio: false,
+            });
+            videoEl.srcObject = stream;
+            previewEl.hidden = false;
+            openBtn.disabled = true;
+            closeBtn.disabled = false;
+            setStatus("Camera ready. Click “Capture & upload”.");
+        } catch (e) {
+            setStatus("Could not access camera. Please allow permission and try again.");
+        }
+    });
+
+    closeBtn.addEventListener('click', () => {
+        stopStream();
+        setStatus("Camera closed.");
+    });
+
+    window.addEventListener('beforeunload', stopStream);
+
+    captureBtn.addEventListener('click', async () => {
+        try {
+            if (!stream) {
+                setStatus("Open the camera first.");
+                return;
+            }
+
+            const w = videoEl.videoWidth || 1280;
+            const h = videoEl.videoHeight || 720;
+            canvasEl.width = w;
+            canvasEl.height = h;
+            const ctx = canvasEl.getContext('2d');
+            ctx.drawImage(videoEl, 0, 0, w, h);
+
+            setStatus("Capturing…");
+            const blob = await new Promise((resolve) => canvasEl.toBlob(resolve, 'image/jpeg', 0.9));
+            if (!blob) {
+                setStatus("Capture failed. Try again.");
+                return;
+            }
+
+            const fd = new FormData();
+            fd.append('receipt', blob, 'receipt.jpg');
+
+            setStatus("Uploading for OCR…");
+            const res = await fetch(uploadUrl, {
+                method: 'POST',
+                body: fd,
+                credentials: 'same-origin',
+            });
+
+            // Flask redirect: navigate to the redirected URL (dashboard with extracted_amount)
+            if (res.redirected) {
+                window.location.assign(res.url);
+                return;
+            }
+
+            if (res.ok) {
+                window.location.reload();
+                return;
+            }
+
+            const text = await res.text();
+            setStatus("Upload failed: " + text);
+        } catch (e) {
+            setStatus("Upload failed. Please try again.");
+        } finally {
+            stopStream();
+        }
+    });
+})();
+</script>
 {% endblock %}

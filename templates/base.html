@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Budget Guardian</title>
+    <meta name="theme-color" content="#0b1020">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
+    <link rel="icon" href="{{ url_for('static', filename='icon.svg') }}" type="image/svg+xml">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=3">
     <!-- Fallback: ensures readable dark mode even if CSS is blocked/cached -->
     <style>
@@ -29,5 +32,14 @@
     <main class="container">
         {% block content %}{% endblock %}
     </main>
+
+    <script>
+    // Register service worker for PWA installability (best-effort).
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('{{ url_for('static', filename='sw.js') }}').catch(() => {});
+      });
+    }
+    </script>
 </body>
 </html>
