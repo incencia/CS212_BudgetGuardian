@@ -1,0 +1,358 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="pagehead">
+  <div>
+    <h2 class="pagehead__title">How it Works</h2>
+    <p class="pagehead__subtitle">Finite State Machine (FSM): budget vs spending → state → GIF.</p>
+  </div>
+</div>
+
+<section class="grid grid--2">
+  <div class="card">
+    <div class="card__header">
+      <h3 class="card__title">Interactive Flowchart</h3>
+      <div class="card__subtitle">Click a step to learn what happens</div>
+    </div>
+
+    <div class="flow">
+      <svg class="flow__svg" id="flow_svg" viewBox="0 0 860 520" role="img" aria-label="Budget Guardian flowchart">
+        <!-- JS draws nodes/edges -->
+      </svg>
+
+      <div class="flow__panel">
+        <div class="flow__panelTitle" id="flow_title">Click a node</div>
+        <div class="flow__panelBody" id="flow_body">This flowchart is the FSM logic only. Use the inputs on the right to see which decision path is taken and which state is chosen.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__header">
+      <h3 class="card__title">Live FSM demo (plays the GIF)</h3>
+      <div class="card__subtitle">Try different spend amounts</div>
+    </div>
+
+    <div class="grid grid--2 grid--tight">
+      <div class="form__row">
+        <label class="label" for="demo_budget">Budget (₱)</label>
+        <input class="input" id="demo_budget" type="number" value="1000" min="0" step="0.01">
+        <div class="help">FSM compares spending vs budget.</div>
+      </div>
+
+      <div class="form__row">
+        <label class="label" for="demo_spent">Spent (₱)</label>
+        <input class="input" id="demo_spent" type="number" value="0" min="0" step="0.01">
+        <div class="help">Underspend &lt; 80% · On track ≤ 100% · Slight ≤ 105% · Major &gt; 105%</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="demo-fsm">
+      <img class="demo-fsm__img" id="demo_pet_img" src="{{ url_for('static', filename='pet_images/' + pet_map['S0']) }}" alt="FSM demo pet" width="140" height="140">
+      <div>
+        <div class="muted">FSM result</div>
+        <div class="demo-fsm__row">
+          <span class="badge" id="demo_state">S0</span>
+          <span class="demo-fsm__emoji" id="demo_emoji">😊</span>
+        </div>
+        <div class="help" id="demo_explain">On track</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="card" style="background: rgba(255,255,255,0.02)">
+      <div class="card__header" style="margin-bottom: 8px;">
+        <h3 class="card__title">Demo dashboard (example)</h3>
+        <div class="card__subtitle">This is not your real data</div>
+      </div>
+
+      <div class="grid grid--3" style="margin-bottom: 12px;">
+        <div class="card stat" style="box-shadow:none; background: rgba(255,255,255,0.03)">
+          <div class="stat__label">Daily budget</div>
+          <div class="stat__value">₱<span id="demo_budget_card">1000.00</span></div>
+        </div>
+        <div class="card stat" style="box-shadow:none; background: rgba(255,255,255,0.03)">
+          <div class="stat__label">Total expense (today)</div>
+          <div class="stat__value stat__value--danger">₱<span id="demo_spent_card">0.00</span></div>
+        </div>
+        <div class="card stat" style="box-shadow:none; background: rgba(255,255,255,0.03)">
+          <div class="stat__label">Pet mood</div>
+          <div class="stat__value"><span id="demo_emoji_card">😊</span></div>
+        </div>
+      </div>
+
+      <div class="help">In the real Dashboard, the totals reset at midnight because it filters to “today”.</div>
+    </div>
+  </div>
+</section>
+
+<script>
+(() => {
+  // ---- Flowchart ----
+  const svg = document.getElementById('flow_svg');
+  const titleEl = document.getElementById('flow_title');
+  const bodyEl = document.getElementById('flow_body');
+  if (!svg || !titleEl || !bodyEl) return;
+
+  // FSM-only flowchart:
+  // Start -> input budget -> input spending -> decisions -> state S0/S1/S2/S3.
+  const nodes = [
+    { id: 'start', type: 'oval',   x: 60,  y: 30,  w: 180, h: 68,  title: 'Start', desc: 'Begin the FSM evaluation.' },
+    { id: 'budget',type: 'rect',   x: 60,  y: 130, w: 230, h: 70,  title: 'Input spending budget', desc: 'Enter the budget (₱). This is the reference limit.' },
+    { id: 'spent', type: 'rect',   x: 60,  y: 240, w: 230, h: 70,  title: 'Input spending', desc: 'Enter the spending (₱). This is what we compare against the budget.' },
+
+    { id: 'd80',   type: 'diamond',x: 360, y: 220, w: 180, h: 120, title: 'Is spending < 80% of budget?', desc: 'If YES → S3 (underspend). If NO → check the next threshold.' },
+    { id: 'd100',  type: 'diamond',x: 360, y: 360, w: 180, h: 120, title: 'Is spending ≤ 100% of budget?', desc: 'If YES → S0 (on track). If NO → check the next threshold.' },
+    { id: 'd105',  type: 'diamond',x: 360, y: 500, w: 180, h: 120, title: 'Is spending ≤ 105% of budget?', desc: 'If YES → S1 (slight overspend). If NO → S2 (major overspend).' },
+
+    { id: 'S0',    type: 'state',  x: 620, y: 170, w: 210, h: 70,  title: 'S0 (On track)', desc: 'On track: spending is within budget.' },
+    { id: 'S1',    type: 'state',  x: 620, y: 270, w: 210, h: 70,  title: 'S1 (Slight overspend)', desc: 'Slight overspend: spending is up to 105% of budget.' },
+    { id: 'S2',    type: 'state',  x: 620, y: 370, w: 210, h: 70,  title: 'S2 (Major overspend)', desc: 'Major overspend: spending is over 105% of budget.' },
+    { id: 'S3',    type: 'state',  x: 620, y: 70,  w: 210, h: 70,  title: 'S3 (Underspend)', desc: 'Underspend: spending is under 80% of budget.' },
+  ];
+
+  const edges = [
+    ['start','budget'],
+    ['budget','spent'],
+    ['spent','d80'],
+    ['d80','S3'],
+    ['d80','d100'],
+    ['d100','S0'],
+    ['d100','d105'],
+    ['d105','S1'],
+    ['d105','S2'],
+  ];
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const mk = (name, attrs={}) => {
+    const el = document.createElementNS(NS, name);
+    for (const [k,v] of Object.entries(attrs)) el.setAttribute(k, String(v));
+    return el;
+  };
+
+  // defs (arrow)
+  const defs = mk('defs');
+  const marker = mk('marker', { id:'arrow', viewBox:'0 0 10 10', refX:'9', refY:'5', markerWidth:'8', markerHeight:'8', orient:'auto-start-reverse' });
+  marker.appendChild(mk('path', { d:'M 0 0 L 10 5 L 0 10 z', fill:'rgba(255,255,255,0.55)' }));
+  defs.appendChild(marker);
+  svg.appendChild(defs);
+
+  // edges
+  const edgeLayer = mk('g', { class:'flow__edges' });
+  const edgeEls = new Map();
+  for (const [a,b] of edges) {
+    const na = nodes.find(n => n.id === a);
+    const nb = nodes.find(n => n.id === b);
+
+    const ax = na.x + na.w;
+    const ay = na.y + na.h / 2;
+    const bx = nb.x;
+    const by = nb.y + nb.h / 2;
+    const mx = (ax + bx)/2;
+    const path = mk('path', {
+      class: 'flow__edge',
+      d: `M ${ax} ${ay} C ${mx} ${ay}, ${mx} ${by}, ${bx} ${by}`,
+      fill: 'none',
+      stroke: 'rgba(255,255,255,0.30)',
+      'stroke-width': '2',
+      'marker-end': 'url(#arrow)'
+    });
+    edgeLayer.appendChild(path);
+    edgeEls.set(`${a}->${b}`, path);
+  }
+  svg.appendChild(edgeLayer);
+
+  // nodes
+  const nodeLayer = mk('g', { class:'flow__nodes' });
+  const nodeEls = new Map();
+  for (const n of nodes) {
+    const g = mk('g', { class:'flow__node', tabindex:'0', 'data-id':n.id });
+
+    // shape
+    if (n.type === 'diamond') {
+      const cx = n.x + n.w / 2;
+      const cy = n.y + n.h / 2;
+      const pts = [
+        `${cx} ${n.y}`,                    // top
+        `${n.x + n.w} ${cy}`,              // right
+        `${cx} ${n.y + n.h}`,              // bottom
+        `${n.x} ${cy}`,                    // left
+      ].join(' ');
+      g.appendChild(mk('polygon', { points: pts, class: 'flow__diamond' }));
+    } else if (n.type === 'oval') {
+      g.appendChild(mk('ellipse', { cx: n.x + n.w/2, cy: n.y + n.h/2, rx: n.w/2, ry: n.h/2, class: 'flow__oval' }));
+    } else {
+      g.appendChild(mk('rect', { x:n.x, y:n.y, width:n.w, height:n.h, rx:'14', class: 'flow__rect' }));
+    }
+
+    // text (wrap-ish: split into 2 lines if too long)
+    const lines = [];
+    if (n.type === 'diamond') {
+      // short-wrap diamond text
+      const parts = n.title.split(' ');
+      let cur = '';
+      for (const p of parts) {
+        const next = (cur ? cur + ' ' : '') + p;
+        if (next.length > 18 && cur) { lines.push(cur); cur = p; } else { cur = next; }
+      }
+      if (cur) lines.push(cur);
+    } else {
+      lines.push(n.title);
+    }
+
+    const tx = n.x + 14;
+    const ty = n.y + (n.type === 'diamond' ? 46 : 38);
+    const text = mk('text', { x: tx, y: ty, class: 'flow__text' });
+    if (lines.length === 1) {
+      text.textContent = lines[0];
+    } else {
+      // center-ish for diamond: tweak x
+      text.setAttribute('x', String(n.x + n.w/2));
+      text.setAttribute('text-anchor', 'middle');
+      const startY = n.y + 44;
+      lines.slice(0, 3).forEach((ln, idx) => {
+        const tsp = mk('tspan', { x: n.x + n.w/2, y: startY + idx * 18 });
+        tsp.textContent = ln;
+        text.appendChild(tsp);
+      });
+    }
+
+    g.appendChild(text);
+    nodeLayer.appendChild(g);
+    nodeEls.set(n.id, g);
+
+    const activate = () => {
+      for (const el of nodeEls.values()) el.classList.remove('is-active');
+      g.classList.add('is-active');
+      titleEl.textContent = n.title;
+      bodyEl.textContent = n.desc;
+    };
+
+    g.addEventListener('click', activate);
+    g.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activate();
+      }
+    });
+  }
+  svg.appendChild(nodeLayer);
+
+  // Default selection
+  nodeEls.get('start')?.dispatchEvent(new Event('click'));
+
+  const clearHighlights = () => {
+    for (const el of nodeEls.values()) {
+      el.classList.remove('is-path');
+      el.classList.remove('is-input');
+      el.classList.remove('is-state');
+    }
+    for (const el of edgeEls.values()) el.classList.remove('is-path');
+  };
+
+  const setPath = (ids, edgePairs=[]) => {
+    clearHighlights();
+    for (const id of ids) nodeEls.get(id)?.classList.add('is-path');
+    for (const [a,b] of edgePairs) edgeEls.get(`${a}->${b}`)?.classList.add('is-path');
+  };
+
+  // ---- FSM demo ----
+  const petMap = {
+    S0: "{{ url_for('static', filename='pet_images/' + pet_map['S0']) }}",
+    S1: "{{ url_for('static', filename='pet_images/' + pet_map['S1']) }}",
+    S2: "{{ url_for('static', filename='pet_images/' + pet_map['S2']) }}",
+    S3: "{{ url_for('static', filename='pet_images/' + pet_map['S3']) }}",
+  };
+
+  const budgetInput = document.getElementById('demo_budget');
+  const spentInput = document.getElementById('demo_spent');
+  const img = document.getElementById('demo_pet_img');
+  const stateEl = document.getElementById('demo_state');
+  const emojiEl = document.getElementById('demo_emoji');
+  const explainEl = document.getElementById('demo_explain');
+  const budgetCard = document.getElementById('demo_budget_card');
+  const spentCard = document.getElementById('demo_spent_card');
+  const emojiCard = document.getElementById('demo_emoji_card');
+
+  const fmt = (n) => (Number.isFinite(n) ? n.toFixed(2) : '0.00');
+  let inputFocus = null; // 'budget' | 'spent' | null
+
+  const compute = () => {
+    const budget = Math.max(0, parseFloat(budgetInput.value || '0'));
+    const spent = Math.max(0, parseFloat(spentInput.value || '0'));
+
+    let state = 'S0';
+    if (budget <= 0) {
+      state = spent > 0 ? 'S2' : 'S0';
+    } else if (spent < 0.8 * budget) {
+      state = 'S3';
+    } else if (spent <= budget) {
+      state = 'S0';
+    } else if (spent <= 1.05 * budget) {
+      state = 'S1';
+    } else {
+      state = 'S2';
+    }
+
+    const meta = {
+      S0: { emoji: '😊', label: 'On track' },
+      S1: { emoji: '😟', label: 'Slight overspend' },
+      S2: { emoji: '😢', label: 'Major overspend' },
+      S3: { emoji: '😺', label: 'Underspend / saving' },
+    }[state];
+
+    img.src = petMap[state];
+    stateEl.textContent = state;
+    emojiEl.textContent = meta.emoji;
+    explainEl.textContent = meta.label;
+
+    // demo dashboard cards
+    budgetCard.textContent = fmt(budget);
+    spentCard.textContent = fmt(spent);
+    emojiCard.textContent = meta.emoji;
+
+    stateEl.className = 'badge ' + (state === 'S0' || state === 'S3' ? 'badge--good' : 'badge--danger');
+
+    // Flowchart highlighting (FSM-only)
+    const base = ['start', 'budget', 'spent'];
+    let path = [];
+    let edgesOn = [['start','budget'],['budget','spent'],['spent','d80']];
+
+    if (state === 'S3') {
+      path = [...base, 'd80', 'S3'];
+      edgesOn = [...edgesOn, ['d80','S3']];
+    } else if (state === 'S0') {
+      path = [...base, 'd80', 'd100', 'S0'];
+      edgesOn = [...edgesOn, ['d80','d100'], ['d100','S0']];
+    } else if (state === 'S1') {
+      path = [...base, 'd80', 'd100', 'd105', 'S1'];
+      edgesOn = [...edgesOn, ['d80','d100'], ['d100','d105'], ['d105','S1']];
+    } else {
+      path = [...base, 'd80', 'd100', 'd105', 'S2'];
+      edgesOn = [...edgesOn, ['d80','d100'], ['d100','d105'], ['d105','S2']];
+    }
+
+    setPath(path, edgesOn);
+
+    // Highlight currently interacted input node
+    if (inputFocus === 'budget') nodeEls.get('budget')?.classList.add('is-input');
+    if (inputFocus === 'spent') nodeEls.get('spent')?.classList.add('is-input');
+
+    // Highlight resulting state box
+    nodeEls.get(state)?.classList.add('is-state');
+  };
+
+  const setFocus = (which) => { inputFocus = which; compute(); };
+  budgetInput.addEventListener('focus', () => setFocus('budget'));
+  spentInput.addEventListener('focus', () => setFocus('spent'));
+  budgetInput.addEventListener('blur', () => setFocus(null));
+  spentInput.addEventListener('blur', () => setFocus(null));
+
+  budgetInput.addEventListener('input', () => setFocus('budget'));
+  spentInput.addEventListener('input', () => setFocus('spent'));
+  compute();
+})();
+</script>
+{% endblock %}
