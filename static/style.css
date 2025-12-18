@@ -242,3 +242,142 @@ h3 { font-size: 18px; }
   background: rgba(0, 0, 0, 0.35);
   object-fit: cover;
 }
+
+/* Insights bar charts */
+.insight__fsm {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.bars {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 10px;
+  align-items: end;
+  height: 190px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  overflow-x: auto;
+}
+
+.bar {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 8px;
+  min-width: 62px;
+}
+
+.bar__fill {
+  width: 100%;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(79, 140, 255, 0.70), rgba(39, 211, 158, 0.55));
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  align-self: end;
+}
+
+.bar__label {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* How it Works: flowchart */
+.flow {
+  display: grid;
+  gap: 12px;
+}
+.flow__svg {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+}
+.flow__panel {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+}
+.flow__panelTitle {
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+.flow__panelBody {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.flow__rect {
+  fill: rgba(255, 255, 255, 0.05);
+  stroke: rgba(255, 255, 255, 0.14);
+  stroke-width: 2;
+}
+.flow__diamond {
+  fill: rgba(255, 255, 255, 0.04);
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 2;
+}
+.flow__oval {
+  fill: rgba(255, 255, 255, 0.05);
+  stroke: rgba(255, 255, 255, 0.14);
+  stroke-width: 2;
+}
+.flow__text {
+  fill: rgba(255, 255, 255, 0.92);
+  font-weight: 900;
+  font-size: 16px;
+}
+.flow__sub {
+  fill: rgba(255, 255, 255, 0.62);
+  font-size: 12px;
+}
+.flow__node { cursor: pointer; }
+.flow__node:focus { outline: none; }
+.flow__node.is-active .flow__rect,
+.flow__node.is-active .flow__diamond,
+.flow__node.is-active .flow__oval {
+  stroke: rgba(79, 140, 255, 0.75);
+  fill: rgba(79, 140, 255, 0.12);
+}
+.flow__edge.is-path { stroke: rgba(79, 140, 255, 0.55) !important; }
+.flow__node.is-path .flow__rect,
+.flow__node.is-path .flow__diamond,
+.flow__node.is-path .flow__oval {
+  stroke: rgba(79, 140, 255, 0.55);
+}
+.flow__node.is-input .flow__rect,
+.flow__node.is-input .flow__diamond,
+.flow__node.is-input .flow__oval {
+  stroke: rgba(255, 207, 91, 0.85);
+  fill: rgba(255, 207, 91, 0.10);
+}
+.flow__node.is-state .flow__rect,
+.flow__node.is-state .flow__diamond,
+.flow__node.is-state .flow__oval {
+  stroke: rgba(39, 211, 158, 0.75);
+  fill: rgba(39, 211, 158, 0.10);
+}
+
+/* How it Works: demo FSM */
+.demo-fsm {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.demo-fsm__img {
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+  object-fit: cover;
+}
+.demo-fsm__row { display: flex; align-items: center; gap: 10px; margin-top: 4px; }
+.demo-fsm__emoji { font-size: 34px; line-height: 1; }

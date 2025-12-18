@@ -5,13 +5,19 @@
 const CACHE_NAME = 'budget-guardian-v1';
 const ASSETS = [
   '/',
+  '/how-it-works',
   '/login',
   '/register',
   '/static/style.css?v=3',
   '/manifest.webmanifest',
   '/sw.js',
+  '/static/icons/apple-touch-icon.png',
   '/static/icons/icon-192.png',
   '/static/icons/icon-512.png',
+  '/static/pet_images/neutral-car.gif',
+  '/static/pet_images/slight_overspend.gif',
+  '/static/pet_images/major_overspend.gif',
+  '/static/pet_images/happy-happy-happy-cat.gif',
 ];
 
 self.addEventListener('install', (event) => {

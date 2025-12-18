@@ -12,7 +12,7 @@
 
 <section class="grid grid--3">
     <div class="card stat">
-        <div class="stat__label">Budget</div>
+        <div class="stat__label">Daily budget</div>
         <div class="stat__value">₱{{ "%.2f"|format(budget or 0) }}</div>
     </div>
     <div class="card stat">
@@ -43,6 +43,30 @@
 
     <div class="card">
         <h3 class="card__title">Add a transaction</h3>
+
+        <div class="alert alert--info" role="note">
+            <strong>Spending limit:</strong> enter a daily/weekly/monthly amount below.
+            The app converts it into a <strong>daily</strong> budget for the dashboard (and derives other periods on Insights).
+        </div>
+
+        <form method="POST" action="{{ url_for('set_budget') }}" class="form" style="margin-bottom: 14px;">
+            <div class="grid grid--2 grid--tight">
+                <div class="form__row">
+                    <label class="label" for="budget_amount">Spending limit</label>
+                    <input id="budget_amount" class="input" name="budget_amount" type="number" step="0.01" placeholder="0.00" required>
+                </div>
+                <div class="form__row">
+                    <label class="label" for="budget_period">Period</label>
+                    <select id="budget_period" class="input" name="budget_period" required>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn--secondary" type="submit">Save spending limit</button>
+        </form>
 
         {% if extracted_amount %}
             <div class="alert alert--info" role="status">
