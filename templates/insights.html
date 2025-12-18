@@ -24,7 +24,8 @@
 
     <div class="bars" aria-label="Daily spending bar chart">
       {% for b in daily %}
-      <div class="bar" title="{{ b.label }}: ₱{{ "%.2f"|format(b.value) }}">
+      <div class="bar {% if loop.last %}bar--current{% endif %}" title="{{ b.label }}: ₱{{ "%.2f"|format(b.value) }}">
+        {% if loop.last %}<div class="bar__marker" aria-hidden="true">Today</div>{% endif %}
         <div class="bar__fill" data-pct="{{ b.pct }}"></div>
         <div class="bar__label">{{ b.label }}</div>
       </div>
@@ -48,7 +49,8 @@
 
     <div class="bars" aria-label="Weekly spending bar chart">
       {% for b in weekly %}
-      <div class="bar" title="{{ b.label }}: ₱{{ "%.2f"|format(b.value) }}">
+      <div class="bar {% if loop.last %}bar--current{% endif %}" title="{{ b.label }}: ₱{{ "%.2f"|format(b.value) }}">
+        {% if loop.last %}<div class="bar__marker" aria-hidden="true">This week</div>{% endif %}
         <div class="bar__fill" data-pct="{{ b.pct }}"></div>
         <div class="bar__label">{{ b.label }}</div>
       </div>
@@ -74,7 +76,8 @@
 
     <div class="bars" aria-label="Monthly spending bar chart">
       {% for b in monthly %}
-      <div class="bar" title="{{ b.label }}: ₱{{ "%.2f"|format(b.value) }}">
+      <div class="bar {% if loop.last %}bar--current{% endif %}" title="{{ b.label }}: ₱{{ "%.2f"|format(b.value) }}">
+        {% if loop.last %}<div class="bar__marker" aria-hidden="true">This month</div>{% endif %}
         <div class="bar__fill" data-pct="{{ b.pct }}"></div>
         <div class="bar__label">{{ b.label }}</div>
       </div>
@@ -98,7 +101,8 @@
 
     <div class="bars" aria-label="Yearly spending bar chart">
       {% for b in yearly %}
-      <div class="bar" title="{{ b.label }}: ₱{{ "%.2f"|format(b.value) }}">
+      <div class="bar {% if loop.last %}bar--current{% endif %}" title="{{ b.label }}: ₱{{ "%.2f"|format(b.value) }}">
+        {% if loop.last %}<div class="bar__marker" aria-hidden="true">This year</div>{% endif %}
         <div class="bar__fill" data-pct="{{ b.pct }}"></div>
         <div class="bar__label">{{ b.label }}</div>
       </div>

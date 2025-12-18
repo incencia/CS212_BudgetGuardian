@@ -139,21 +139,71 @@
   defs.appendChild(marker);
   svg.appendChild(defs);
 
+  const center = (n) => ({ cx: n.x + n.w / 2, cy: n.y + n.h / 2 });
+
+  const anchorPoint = (from, to) => {
+    // Pick the most natural side of the shape based on direction to target.
+    const { cx: fx, cy: fy } = center(from);
+    const { cx: tx, cy: ty } = center(to);
+    const dx = tx - fx;
+    const dy = ty - fy;
+    const horiz = Math.abs(dx) >= Math.abs(dy);
+
+    // Diamond anchors are different: they use the vertices.
+    if (from.type === 'diamond') {
+      if (horiz) {
+        return dx >= 0 ? { x: from.x + from.w, y: from.y + from.h / 2 } : { x: from.x, y: from.y + from.h / 2 };
+      }
+      return dy >= 0 ? { x: from.x + from.w / 2, y: from.y + from.h } : { x: from.x + from.w / 2, y: from.y };
+    }
+
+    // Oval start/end: approximate with left/right/top/bottom points.
+    if (from.type === 'oval') {
+      if (horiz) {
+        return dx >= 0 ? { x: from.x + from.w, y: from.y + from.h / 2 } : { x: from.x, y: from.y + from.h / 2 };
+      }
+      return dy >= 0 ? { x: from.x + from.w / 2, y: from.y + from.h } : { x: from.x + from.w / 2, y: from.y };
+    }
+
+    // Rect/state: same left/right/top/bottom points.
+    if (horiz) {
+      return dx >= 0 ? { x: from.x + from.w, y: from.y + from.h / 2 } : { x: from.x, y: from.y + from.h / 2 };
+    }
+    return dy >= 0 ? { x: from.x + from.w / 2, y: from.y + from.h } : { x: from.x + from.w / 2, y: from.y };
+  };
+
+  const curvePath = (s, t) => {
+    const dx = t.x - s.x;
+    const dy = t.y - s.y;
+    const horiz = Math.abs(dx) >= Math.abs(dy);
+
+    if (horiz) {
+      const c = Math.max(50, Math.min(180, Math.abs(dx) * 0.5));
+      const c1 = { x: s.x + (dx >= 0 ? c : -c), y: s.y };
+      const c2 = { x: t.x - (dx >= 0 ? c : -c), y: t.y };
+      return `M ${s.x} ${s.y} C ${c1.x} ${c1.y}, ${c2.x} ${c2.y}, ${t.x} ${t.y}`;
+    }
+
+    const c = Math.max(50, Math.min(180, Math.abs(dy) * 0.5));
+    const c1 = { x: s.x, y: s.y + (dy >= 0 ? c : -c) };
+    const c2 = { x: t.x, y: t.y - (dy >= 0 ? c : -c) };
+    return `M ${s.x} ${s.y} C ${c1.x} ${c1.y}, ${c2.x} ${c2.y}, ${t.x} ${t.y}`;
+  };
+
   // edges
   const edgeLayer = mk('g', { class:'flow__edges' });
   const edgeEls = new Map();
-  for (const [a,b] of edges) {
+  for (const [a, b] of edges) {
     const na = nodes.find(n => n.id === a);
     const nb = nodes.find(n => n.id === b);
+    if (!na || !nb) continue;
 
-    const ax = na.x + na.w;
-    const ay = na.y + na.h / 2;
-    const bx = nb.x;
-    const by = nb.y + nb.h / 2;
-    const mx = (ax + bx)/2;
+    // Use proper anchors for each connection direction.
+    const s = anchorPoint(na, nb);
+    const t = anchorPoint(nb, na);
     const path = mk('path', {
       class: 'flow__edge',
-      d: `M ${ax} ${ay} C ${mx} ${ay}, ${mx} ${by}, ${bx} ${by}`,
+      d: curvePath(s, t),
       fill: 'none',
       'marker-end': 'url(#arrow)'
     });

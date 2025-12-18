@@ -274,6 +274,7 @@ h3 { font-size: 18px; }
   grid-template-rows: 1fr auto;
   gap: 8px;
   min-width: 62px;
+  position: relative;
 }
 
 .bar__fill {
@@ -283,6 +284,38 @@ h3 { font-size: 18px; }
   border: 1px solid rgba(255, 255, 255, 0.10);
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
   align-self: end;
+}
+
+.bar__marker {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.90);
+  background: rgba(79, 140, 255, 0.18);
+  border: 1px solid rgba(79, 140, 255, 0.35);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.bar__marker::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -7px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid rgba(79, 140, 255, 0.35);
+}
+
+.bar--current .bar__fill {
+  border-color: rgba(79, 140, 255, 0.55);
+  box-shadow: 0 12px 34px rgba(79, 140, 255, 0.12);
 }
 
 .bar__label {
