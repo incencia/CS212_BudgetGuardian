@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="pagehead">
+  <div>
+    <h2 class="pagehead__title">Insights</h2>
+    <p class="pagehead__subtitle">Spending over time (daily / weekly / monthly / yearly) with a separate FSM result per timeframe.</p>
+  </div>
+</div>
+
+<section class="grid grid--2">
+  <div class="card">
+    <div class="card__header">
+      <h3 class="card__title">Daily (last 7 days)</h3>
+      <div class="card__subtitle">Today: <span class="mono">₱{{ "%.2f"|format(daily_total or 0) }}</span> · Budget: <span class="mono">₱{{ "%.2f"|format(daily_budget or 0) }}</span></div>
+    </div>
+
+    <div class="insight__fsm">
+      <img class="pet__img" src="{{ url_for('static', filename='pet_images/' + daily_pet) }}" width="72" height="72" alt="daily pet">
+      <div>
+        <div class="muted">FSM (daily)</div>
+        <div style="font-size: 28px">{{ daily_emotion }}</div>
+      </div>
+    </div>
+
+    <div class="bars" aria-label="Daily spending bar chart">
+      {% for b in daily %}
+      <div class="bar" title="{{ b.label }}: ₱{{ "%.2f"|format(b.value) }}">
+        <div class="bar__fill" data-pct="{{ b.pct }}"></div>
+        <div class="bar__label">{{ b.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__header">
+      <h3 class="card__title">Weekly (last 8 weeks)</h3>
+      <div class="card__subtitle">This week: <span class="mono">₱{{ "%.2f"|format(weekly_total or 0) }}</span> · Budget: <span class="mono">₱{{ "%.2f"|format(weekly_budget or 0) }}</span></div>
+    </div>
+
+    <div class="insight__fsm">
+      <img class="pet__img" src="{{ url_for('static', filename='pet_images/' + weekly_pet) }}" width="72" height="72" alt="weekly pet">
+      <div>
+        <div class="muted">FSM (weekly)</div>
+        <div style="font-size: 28px">{{ weekly_emotion }}</div>
+      </div>
+    </div>
+
+    <div class="bars" aria-label="Weekly spending bar chart">
+      {% for b in weekly %}
+      <div class="bar" title="{{ b.label }}: ₱{{ "%.2f"|format(b.value) }}">
+        <div class="bar__fill" data-pct="{{ b.pct }}"></div>
+        <div class="bar__label">{{ b.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="grid grid--2">
+  <div class="card">
+    <div class="card__header">
+      <h3 class="card__title">Monthly (last 6 months)</h3>
+      <div class="card__subtitle">This month: <span class="mono">₱{{ "%.2f"|format(monthly_total or 0) }}</span> · Budget: <span class="mono">₱{{ "%.2f"|format(monthly_budget or 0) }}</span></div>
+    </div>
+
+    <div class="insight__fsm">
+      <img class="pet__img" src="{{ url_for('static', filename='pet_images/' + monthly_pet) }}" width="72" height="72" alt="monthly pet">
+      <div>
+        <div class="muted">FSM (monthly)</div>
+        <div style="font-size: 28px">{{ monthly_emotion }}</div>
+      </div>
+    </div>
+
+    <div class="bars" aria-label="Monthly spending bar chart">
+      {% for b in monthly %}
+      <div class="bar" title="{{ b.label }}: ₱{{ "%.2f"|format(b.value) }}">
+        <div class="bar__fill" data-pct="{{ b.pct }}"></div>
+        <div class="bar__label">{{ b.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__header">
+      <h3 class="card__title">Yearly (last 5 years)</h3>
+      <div class="card__subtitle">This year: <span class="mono">₱{{ "%.2f"|format(yearly_total or 0) }}</span> · Budget: <span class="mono">₱{{ "%.2f"|format(yearly_budget or 0) }}</span></div>
+    </div>
+
+    <div class="insight__fsm">
+      <img class="pet__img" src="{{ url_for('static', filename='pet_images/' + yearly_pet) }}" width="72" height="72" alt="yearly pet">
+      <div>
+        <div class="muted">FSM (yearly)</div>
+        <div style="font-size: 28px">{{ yearly_emotion }}</div>
+      </div>
+    </div>
+
+    <div class="bars" aria-label="Yearly spending bar chart">
+      {% for b in yearly %}
+      <div class="bar" title="{{ b.label }}: ₱{{ "%.2f"|format(b.value) }}">
+        <div class="bar__fill" data-pct="{{ b.pct }}"></div>
+        <div class="bar__label">{{ b.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card__header">
+    <h3 class="card__title">Spending history (last 6 months)</h3>
+    <div class="card__subtitle">Expenses only</div>
+  </div>
+
+  {% if history %}
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in history %}
+          <tr>
+            <td class="muted">{% if t.date %}{{ t.date.strftime('%Y-%m-%d') }}{% else %}—{% endif %}</td>
+            <td>{{ t.category }}</td>
+            <td class="mono">₱{{ "%.2f"|format(t.amount or 0) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty">
+      <div class="empty__title">No expenses yet</div>
+      <div class="empty__subtitle">Add expenses on the dashboard to see your history here.</div>
+    </div>
+  {% endif %}
+</section>
+
+<script>
+// Set bar heights without inline Jinja styles (prevents editor CSS parse errors).
+(() => {
+  for (const el of document.querySelectorAll('.bar__fill[data-pct]')) {
+    const raw = el.getAttribute('data-pct');
+    const pct = Math.max(0, Math.min(100, Number.parseFloat(raw || '0')));
+    el.style.height = pct + '%';
+  }
+})();
+</script>
+{% endblock %}
