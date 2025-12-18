@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for, jsonify, abort
+from flask import Flask, render_template, redirect, request, url_for, jsonify, abort, send_from_directory
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
@@ -39,6 +39,21 @@ def load_user(user_id):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+# ---- PWA helpers ----
+# Service workers need to be served from the site root to control the whole app.
+@app.route('/sw.js')
+def service_worker():
+    resp = send_from_directory(app.static_folder, 'sw.js', mimetype='application/javascript')
+    # Avoid stale SW during development.
+    resp.headers['Cache-Control'] = 'no-cache'
+    return resp
+
+
+@app.route('/manifest.webmanifest')
+def manifest():
+    return send_from_directory(app.static_folder, 'manifest.webmanifest', mimetype='application/manifest+json')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
