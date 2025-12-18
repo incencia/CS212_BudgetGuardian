@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Budget Guardian</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=3">
+    <!-- Fallback: ensures readable dark mode even if CSS is blocked/cached -->
+    <style>
+      body { background: #0b1020; color: rgba(255,255,255,0.92); }
+    </style>
 </head>
 <body>
     <header class="nav">
