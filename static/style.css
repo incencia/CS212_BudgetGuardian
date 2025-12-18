@@ -151,22 +151,9 @@ h3 { font-size: 18px; }
 .input::placeholder { color: rgba(255, 255, 255, 0.45); }
 .input:focus { border-color: rgba(79, 140, 255, 0.55); box-shadow: 0 0 0 4px rgba(79, 140, 255, 0.18); }
 .form__row.is-linked .input {
-  border-color: rgba(255, 207, 91, 0.85);
-  box-shadow: 0 0 0 4px rgba(255, 207, 91, 0.16);
+  border-color: rgba(79, 140, 255, 0.75);
+  box-shadow: 0 0 0 4px rgba(79, 140, 255, 0.16);
 }
-.demo-link { display: flex; gap: 8px; align-items: center; }
-.link-btn {
-  appearance: none;
-  border: 1px solid rgba(255,255,255,0.16);
-  background: rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.88);
-  padding: 4px 10px;
-  border-radius: 999px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 800;
-}
-.link-btn:hover { background: rgba(255,255,255,0.10); }
 
 /* Layout helpers */
 .grid { display: grid; gap: 14px; }
@@ -317,6 +304,8 @@ h3 { font-size: 18px; }
   border-radius: 14px;
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.03);
+  /* Prevent “chopped” diagrams by reserving enough height */
+  aspect-ratio: 860 / 700;
 }
 .flow__panel {
   padding: 12px;
@@ -334,18 +323,18 @@ h3 { font-size: 18px; }
   line-height: 1.5;
 }
 .flow__rect {
-  fill: rgba(255, 255, 255, 0.05);
-  stroke: rgba(255, 255, 255, 0.14);
+  fill: rgba(255, 255, 255, 0.045);
+  stroke: rgba(255, 255, 255, 0.16);
   stroke-width: 2;
 }
 .flow__diamond {
-  fill: rgba(255, 255, 255, 0.04);
-  stroke: rgba(255, 255, 255, 0.18);
+  fill: rgba(255, 255, 255, 0.045);
+  stroke: rgba(255, 255, 255, 0.16);
   stroke-width: 2;
 }
 .flow__oval {
-  fill: rgba(255, 255, 255, 0.05);
-  stroke: rgba(255, 255, 255, 0.14);
+  fill: rgba(255, 255, 255, 0.045);
+  stroke: rgba(255, 255, 255, 0.16);
   stroke-width: 2;
 }
 .flow__text {
@@ -359,13 +348,17 @@ h3 { font-size: 18px; }
 }
 .flow__node { cursor: pointer; }
 .flow__node:focus { outline: none; }
+.flow__edge {
+  stroke: rgba(255, 255, 255, 0.26);
+  stroke-width: 2;
+}
 .flow__node.is-active .flow__rect,
 .flow__node.is-active .flow__diamond,
 .flow__node.is-active .flow__oval {
-  stroke: rgba(79, 140, 255, 0.75);
-  fill: rgba(79, 140, 255, 0.12);
+  stroke: rgba(79, 140, 255, 0.85);
+  fill: rgba(79, 140, 255, 0.10);
 }
-.flow__edge.is-path { stroke: rgba(79, 140, 255, 0.55) !important; }
+.flow__edge.is-path { stroke: rgba(79, 140, 255, 0.65) !important; }
 .flow__node.is-path .flow__rect,
 .flow__node.is-path .flow__diamond,
 .flow__node.is-path .flow__oval {
@@ -374,18 +367,19 @@ h3 { font-size: 18px; }
 .flow__node.is-input .flow__rect,
 .flow__node.is-input .flow__diamond,
 .flow__node.is-input .flow__oval {
-  stroke: rgba(255, 207, 91, 0.85);
-  fill: rgba(255, 207, 91, 0.10);
+  stroke: rgba(79, 140, 255, 0.95);
+  fill: rgba(79, 140, 255, 0.12);
 }
 .flow__node.is-state .flow__rect,
 .flow__node.is-state .flow__diamond,
 .flow__node.is-state .flow__oval {
-  stroke: rgba(39, 211, 158, 0.75);
-  fill: rgba(39, 211, 158, 0.10);
+  stroke: rgba(79, 140, 255, 0.95);
+  fill: rgba(79, 140, 255, 0.12);
+  filter: drop-shadow(0 10px 24px rgba(79, 140, 255, 0.18));
 }
-/* Make the path highlight feel “linked”, not random */
-.flow__node.is-input .flow__text { fill: rgba(255, 207, 91, 0.95); }
-.flow__node.is-state .flow__text { fill: rgba(39, 211, 158, 0.95); }
+/* Keep flowchart text consistent (uniform color) */
+.flow__node.is-input .flow__text,
+.flow__node.is-state .flow__text { fill: rgba(255, 255, 255, 0.92); }
 
 /* How it Works: demo FSM */
 .demo-fsm {
