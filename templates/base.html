@@ -6,7 +6,9 @@
     <title>Budget Guardian</title>
     <meta name="theme-color" content="#0b1020">
     <link rel="manifest" href="{{ url_for('manifest') }}">
+    <link rel="icon" href="{{ url_for('static', filename='icons/icon-192.png') }}" type="image/png">
     <link rel="icon" href="{{ url_for('static', filename='icon.svg') }}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/apple-touch-icon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=3">
     <!-- Fallback: ensures readable dark mode even if CSS is blocked/cached -->
     <style>
@@ -37,7 +39,7 @@
     // Register service worker for PWA installability (best-effort).
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('{{ url_for('service_worker') }}').catch(() => {});
+        navigator.serviceWorker.register("{{ url_for('service_worker') }}").catch(() => {});
       });
     }
     </script>

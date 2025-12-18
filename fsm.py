@@ -15,10 +15,14 @@ class BudgetFSM:
 
     def get_pet_emotion(self):
         mapping = {
-            'S0': ('😊', 'happy.png'),
-            'S1': ('😟', 'concerned.png'),
-            'S2': ('😢', 'sad.png'),
-            'S3': ('😺', 'proud.png'),
+            # On track
+            'S0': ('😊', 'neutral-car.gif'),
+            # Slight overspend
+            'S1': ('😟', 'slight_overspend.gif'),
+            # Major overspend
+            'S2': ('😢', 'major_overspend.gif'),
+            # Underspend / saving more
+            'S3': ('😺', 'happy-happy-happy-cat.gif'),
         }
         state = self.get_state()
         return mapping[state]
