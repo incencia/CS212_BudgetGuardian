@@ -339,18 +339,14 @@ h3 { font-size: 18px; }
   border: 1px solid var(--border);
   overflow: hidden;
 
-  /* Dark UI + draw.io vibes: subtle grid on a dark canvas */
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02)),
-    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px),
-    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-    rgba(255,255,255,0.018);
-  background-size: auto, 24px 24px, 24px 24px, auto;
+  /* Infographic-style canvas (like the sample image) */
+  background: #f7f8fc;
 
   /* Prevent “chopped” diagrams by reserving enough height */
   aspect-ratio: 827 / 420;
 }
 .flow__frame {
+  display: none;
   position: absolute;
   inset: 0;
   width: 100%;
@@ -365,36 +361,121 @@ h3 { font-size: 18px; }
   width: 100%;
   height: 100%;
 }
-.flow__overlay {
+
+/* FSM infographic diagram */
+.fsmViz {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  /* let the hitboxes opt-in to pointer events */
+}
+.fsmViz__arrows {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
-.flow__hit { pointer-events: all; cursor: pointer; }
+.fsmNode {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-weight: 900;
+  border: 4px solid rgba(0,0,0,0.55);
+  box-shadow: 0 14px 26px rgba(0,0,0,0.18);
+  cursor: pointer;
+  user-select: none;
+}
+.fsmNode__icon { font-size: 26px; line-height: 1; }
+.fsmNode__label { margin-top: 6px; font-size: 14px; color: rgba(0,0,0,0.82); }
+.fsmNode--gold {
+  background: radial-gradient(circle at 30% 25%, #ffe9a6, #d9a700);
+}
+.fsmNode--blue {
+  background: radial-gradient(circle at 30% 25%, #bfe5ff, #2e7dd6);
+  border-color: rgba(0,0,0,0.45);
+}
+.fsmBox {
+  position: absolute;
+  width: 190px;
+  padding: 10px 10px 8px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 3px solid rgba(0,0,0,0.55);
+  box-shadow: 0 16px 28px rgba(0,0,0,0.16);
+  font-size: 12px;
+}
+.fsmBox__title { font-weight: 1000; font-size: 14px; color: rgba(0,0,0,0.84); }
+.fsmBox__sub { color: rgba(0,0,0,0.55); margin-bottom: 8px; }
+.fsmLine {
+  margin-top: 6px;
+  padding: 6px 6px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.12);
+  cursor: pointer;
+  background: rgba(0,0,0,0.02);
+}
+.fsmStates {
+  position: absolute;
+  width: 74px;
+  height: 300px;
+}
+.fsmState {
+  position: absolute;
+  left: -6px;
+  width: 86px;
+  height: 76px;
+  border-radius: 18px;
+  border: 3px solid rgba(0,0,0,0.55);
+  background: #ffffff;
+  box-shadow: 0 14px 24px rgba(0,0,0,0.14);
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  cursor: pointer;
+}
+.fsmState__img {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.18);
+  object-fit: cover;
+  background: rgba(0,0,0,0.06);
+}
+.fsmState__label {
+  font-weight: 1000;
+  color: rgba(0,0,0,0.85);
+  font-size: 14px;
+}
 
-.flow__hl {
-  fill: none;
-  stroke: transparent;
-  stroke-width: 4;
+/* Highlights (real-time) */
+.fsmNode.is-path,
+.fsmBox.is-path,
+.fsmLine.is-path,
+.fsmState.is-path {
+  outline: 4px solid rgba(79, 140, 255, 0.85);
+  outline-offset: 2px;
 }
-.flow__hl.is-active,
-.flow__hl.is-input {
-  stroke: rgba(79, 140, 255, 0.95);
+.fsmNode.is-input {
+  outline: 5px solid rgba(79, 140, 255, 0.95);
 }
-.flow__hl.is-path {
-  stroke: rgba(79, 140, 255, 0.70);
+.fsmState.is-state {
+  outline: 5px solid rgba(39, 211, 158, 0.95);
 }
-.flow__hl.is-state {
-  stroke: rgba(39, 211, 158, 0.92);
+.fsmLine.is-path {
+  background: rgba(79, 140, 255, 0.12);
+  border-color: rgba(79, 140, 255, 0.35);
 }
-.flow__hlGlow.is-active,
-.flow__hlGlow.is-input,
-.flow__hlGlow.is-path,
-.flow__hlGlow.is-state {
-  filter: drop-shadow(0 10px 18px rgba(79, 140, 255, 0.22));
+.fsmNode.is-active,
+.fsmLine.is-active,
+.fsmState.is-active {
+  outline: 5px solid rgba(0,0,0,0.75);
 }
 .flow__panel {
   padding: 12px;
