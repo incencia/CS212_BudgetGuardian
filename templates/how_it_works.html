@@ -15,7 +15,7 @@
     </div>
 
     <div class="flow">
-      <svg class="flow__svg" id="flow_svg" viewBox="0 0 860 700" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Budget Guardian FSM flowchart">
+      <svg class="flow__svg" id="flow_svg" viewBox="0 0 827 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Budget Guardian FSM flowchart">
         <!-- JS draws nodes/edges -->
       </svg>
 
@@ -96,33 +96,40 @@
   const bodyEl = document.getElementById('flow_body');
   if (!svg || !titleEl || !bodyEl) return;
 
-  // FSM-only flowchart:
-  // Start -> input budget -> input spending -> decisions -> state S0/S1/S2/S3.
+  // FSM-only flowchart (draw.io exported look):
+  // Use the same grid-ish sizing/spacing as the provided draw.io diagram.
   const nodes = [
-    { id: 'start', type: 'oval',   x: 60,  y: 30,  w: 180, h: 68,  title: 'Start', desc: 'Begin the FSM evaluation.' },
-    { id: 'budget',type: 'rect',   x: 60,  y: 130, w: 230, h: 70,  title: 'Input spending budget', desc: 'Enter the budget (₱). This is the reference limit.' },
-    { id: 'spent', type: 'rect',   x: 60,  y: 240, w: 230, h: 70,  title: 'Input spending', desc: 'Enter the spending (₱). This is what we compare against the budget.' },
+    // Left column
+    { id: 'start', type: 'oval',   x: 70,  y: 10,  w: 120, h: 80, title: 'start', desc: 'Begin the FSM evaluation.' },
+    { id: 'budget',type: 'rect',   x: 70,  y: 170, w: 120, h: 60, title: 'input budget', desc: 'Enter the budget (₱). This is the reference limit.' },
+    { id: 'spent', type: 'rect',   x: 70,  y: 310, w: 120, h: 60, title: 'input spending', desc: 'Enter the spending (₱). This is what we compare against the budget.' },
 
-    { id: 'd80',   type: 'diamond',x: 360, y: 220, w: 180, h: 120, title: 'Is spending < 80% of budget?', desc: 'If YES → S3 (underspend). If NO → check the next threshold.' },
-    { id: 'd100',  type: 'diamond',x: 360, y: 360, w: 180, h: 120, title: 'Is spending ≤ 100% of budget?', desc: 'If YES → S0 (on track). If NO → check the next threshold.' },
-    { id: 'd105',  type: 'diamond',x: 360, y: 500, w: 180, h: 120, title: 'Is spending ≤ 105% of budget?', desc: 'If YES → S1 (slight overspend). If NO → S2 (major overspend).' },
+    // Decision ladder (top -> bottom)
+    { id: 'd80',   type: 'diamond',x: 374, y: 12,  w: 80,  h: 80, title: 'is spending < 80% of budget?', desc: 'YES → S3. NO → next decision.' },
+    { id: 'd100',  type: 'diamond',x: 374, y: 112, w: 80,  h: 80, title: 'is spending ≤ 100% of budget?', desc: 'YES → S0. NO → next decision.' },
+    { id: 'd105',  type: 'diamond',x: 374, y: 212, w: 80,  h: 80, title: 'is spending ≤ 105% of budget?', desc: 'YES → S1. NO → S2.' },
 
-    { id: 'S0',    type: 'state',  x: 620, y: 170, w: 210, h: 70,  title: 'S0 (On track)', desc: 'On track: spending is within budget.' },
-    { id: 'S1',    type: 'state',  x: 620, y: 270, w: 210, h: 70,  title: 'S1 (Slight overspend)', desc: 'Slight overspend: spending is up to 105% of budget.' },
-    { id: 'S2',    type: 'state',  x: 620, y: 370, w: 210, h: 70,  title: 'S2 (Major overspend)', desc: 'Major overspend: spending is over 105% of budget.' },
-    { id: 'S3',    type: 'state',  x: 620, y: 70,  w: 210, h: 70,  title: 'S3 (Underspend)', desc: 'Underspend: spending is under 80% of budget.' },
+    // States column (same sizing as draw.io export)
+    { id: 'S0',    type: 'state',  x: 600, y: 22,  w: 120, h: 60, title: 'S0', desc: 'On track: spending is within budget.' },
+    { id: 'S1',    type: 'state',  x: 610, y: 122, w: 120, h: 60, title: 'S1', desc: 'Slight overspend: spending is up to 105% of budget.' },
+    { id: 'S2',    type: 'state',  x: 610, y: 222, w: 120, h: 60, title: 'S2', desc: 'Major overspend: spending is over 105% of budget.' },
+    { id: 'S3',    type: 'state',  x: 610, y: 322, w: 120, h: 60, title: 'S3', desc: 'Underspend: spending is under 80% of budget.' },
   ];
 
+  // Edges with explicit anchor sides (orthogonal, draw.io-like).
   const edges = [
-    ['start','budget'],
-    ['budget','spent'],
-    ['spent','d80'],
-    ['d80','S3'],
-    ['d80','d100'],
-    ['d100','S0'],
-    ['d100','d105'],
-    ['d105','S1'],
-    ['d105','S2'],
+    { from: 'start',  to: 'budget', sideFrom: 'bottom', sideTo: 'top' },
+    { from: 'budget', to: 'spent',  sideFrom: 'bottom', sideTo: 'top' },
+    { from: 'spent',  to: 'd80',    sideFrom: 'right',  sideTo: 'left' },
+
+    { from: 'd80',    to: 'S3',     sideFrom: 'right',  sideTo: 'left',  label: 'YES' },
+    { from: 'd80',    to: 'd100',   sideFrom: 'bottom', sideTo: 'top',   label: 'NO' },
+
+    { from: 'd100',   to: 'S0',     sideFrom: 'right',  sideTo: 'left',  label: 'YES' },
+    { from: 'd100',   to: 'd105',   sideFrom: 'bottom', sideTo: 'top',   label: 'NO' },
+
+    { from: 'd105',   to: 'S1',     sideFrom: 'right',  sideTo: 'left',  label: 'YES' },
+    { from: 'd105',   to: 'S2',     sideFrom: 'bottom', sideTo: 'left',  label: 'NO' },
   ];
 
   const NS = 'http://www.w3.org/2000/svg';
@@ -135,80 +142,116 @@
   // defs (arrow)
   const defs = mk('defs');
   const marker = mk('marker', { id:'arrow', viewBox:'0 0 10 10', refX:'9', refY:'5', markerWidth:'8', markerHeight:'8', orient:'auto-start-reverse' });
-  marker.appendChild(mk('path', { d:'M 0 0 L 10 5 L 0 10 z', fill:'rgba(255,255,255,0.55)' }));
+  marker.appendChild(mk('path', { d:'M 0 0 L 10 5 L 0 10 z', fill:'rgba(255,255,255,0.85)' }));
   defs.appendChild(marker);
   svg.appendChild(defs);
 
   const center = (n) => ({ cx: n.x + n.w / 2, cy: n.y + n.h / 2 });
 
-  const anchorPoint = (from, to) => {
-    // Pick the most natural side of the shape based on direction to target.
-    const { cx: fx, cy: fy } = center(from);
-    const { cx: tx, cy: ty } = center(to);
-    const dx = tx - fx;
-    const dy = ty - fy;
-    const horiz = Math.abs(dx) >= Math.abs(dy);
-
-    // Diamond anchors are different: they use the vertices.
-    if (from.type === 'diamond') {
-      if (horiz) {
-        return dx >= 0 ? { x: from.x + from.w, y: from.y + from.h / 2 } : { x: from.x, y: from.y + from.h / 2 };
-      }
-      return dy >= 0 ? { x: from.x + from.w / 2, y: from.y + from.h } : { x: from.x + from.w / 2, y: from.y };
+  const anchorPoint = (node, side) => {
+    // Explicit side anchors make the diagram deterministic & clean.
+    if (node.type === 'diamond') {
+      if (side === 'left') return { x: node.x, y: node.y + node.h / 2 };
+      if (side === 'right') return { x: node.x + node.w, y: node.y + node.h / 2 };
+      if (side === 'top') return { x: node.x + node.w / 2, y: node.y };
+      if (side === 'bottom') return { x: node.x + node.w / 2, y: node.y + node.h };
     }
 
-    // Oval start/end: approximate with left/right/top/bottom points.
-    if (from.type === 'oval') {
-      if (horiz) {
-        return dx >= 0 ? { x: from.x + from.w, y: from.y + from.h / 2 } : { x: from.x, y: from.y + from.h / 2 };
-      }
-      return dy >= 0 ? { x: from.x + from.w / 2, y: from.y + from.h } : { x: from.x + from.w / 2, y: from.y };
+    if (node.type === 'oval') {
+      if (side === 'left') return { x: node.x, y: node.y + node.h / 2 };
+      if (side === 'right') return { x: node.x + node.w, y: node.y + node.h / 2 };
+      if (side === 'top') return { x: node.x + node.w / 2, y: node.y };
+      if (side === 'bottom') return { x: node.x + node.w / 2, y: node.y + node.h };
     }
 
-    // Rect/state: same left/right/top/bottom points.
-    if (horiz) {
-      return dx >= 0 ? { x: from.x + from.w, y: from.y + from.h / 2 } : { x: from.x, y: from.y + from.h / 2 };
-    }
-    return dy >= 0 ? { x: from.x + from.w / 2, y: from.y + from.h } : { x: from.x + from.w / 2, y: from.y };
+    // rect/state fallback
+    if (side === 'left') return { x: node.x, y: node.y + node.h / 2 };
+    if (side === 'right') return { x: node.x + node.w, y: node.y + node.h / 2 };
+    if (side === 'top') return { x: node.x + node.w / 2, y: node.y };
+    if (side === 'bottom') return { x: node.x + node.w / 2, y: node.y + node.h };
+    return center(node);
   };
 
-  const curvePath = (s, t) => {
-    const dx = t.x - s.x;
-    const dy = t.y - s.y;
-    const horiz = Math.abs(dx) >= Math.abs(dy);
+  const orthoPath = (s, t, sideFrom, sideTo) => {
+    // Draw.io-like orthogonal routing: stub out, then 1-2 bends, then stub in.
+    const stub = 22;
+    const outDir = (side) => {
+      if (side === 'right') return { x: 1, y: 0 };
+      if (side === 'left') return { x: -1, y: 0 };
+      if (side === 'bottom') return { x: 0, y: 1 };
+      if (side === 'top') return { x: 0, y: -1 };
+      return { x: 0, y: 0 };
+    };
 
-    if (horiz) {
-      const c = Math.max(50, Math.min(180, Math.abs(dx) * 0.5));
-      const c1 = { x: s.x + (dx >= 0 ? c : -c), y: s.y };
-      const c2 = { x: t.x - (dx >= 0 ? c : -c), y: t.y };
-      return `M ${s.x} ${s.y} C ${c1.x} ${c1.y}, ${c2.x} ${c2.y}, ${t.x} ${t.y}`;
-    }
+    const d1 = outDir(sideFrom);
+    const d2 = outDir(sideTo);
 
-    const c = Math.max(50, Math.min(180, Math.abs(dy) * 0.5));
-    const c1 = { x: s.x, y: s.y + (dy >= 0 ? c : -c) };
-    const c2 = { x: t.x, y: t.y - (dy >= 0 ? c : -c) };
-    return `M ${s.x} ${s.y} C ${c1.x} ${c1.y}, ${c2.x} ${c2.y}, ${t.x} ${t.y}`;
+    const p0 = { x: s.x, y: s.y };
+    const p1 = { x: s.x + d1.x * stub, y: s.y + d1.y * stub };
+    const p3 = { x: t.x + d2.x * stub, y: t.y + d2.y * stub };
+    const p4 = { x: t.x, y: t.y };
+
+    // Choose routing axis based on the source exit direction.
+    const horizFirst = (sideFrom === 'left' || sideFrom === 'right');
+    const p2 = horizFirst ? { x: p3.x, y: p1.y } : { x: p1.x, y: p3.y };
+
+    // Build path segments (avoid zero-length segments)
+    const pts = [p0, p1, p2, p3, p4].filter((p, idx, arr) => {
+      if (idx === 0) return true;
+      const prev = arr[idx - 1];
+      return !(Math.abs(prev.x - p.x) < 0.1 && Math.abs(prev.y - p.y) < 0.1);
+    });
+
+    return pts.reduce((d, p, idx) => d + (idx === 0 ? `M ${p.x} ${p.y}` : ` L ${p.x} ${p.y}`), '');
   };
 
-  // edges
+  const labelPos = (fromNode, toNode, sideFrom, sideTo) => {
+    // Place YES/NO similar to the draw.io export: near the branch, not the midpoint.
+    const fx = fromNode.x + fromNode.w / 2;
+    const fy = fromNode.y + fromNode.h / 2;
+    const tx = toNode.x + toNode.w / 2;
+    const ty = toNode.y + toNode.h / 2;
+    const horiz = Math.abs(tx - fx) >= Math.abs(ty - fy);
+
+    // Downward (NO) between diamonds
+    if (!horiz && sideFrom === 'bottom' && sideTo === 'top') {
+      return { x: fx, y: (fromNode.y + fromNode.h + toNode.y) / 2 - 6 };
+    }
+
+    // Rightward (YES) into state boxes
+    if (horiz && sideFrom === 'right' && sideTo === 'left') {
+      return { x: fromNode.x + fromNode.w + 26, y: fromNode.y + fromNode.h / 2 - 8 };
+    }
+
+    // Fallback
+    return { x: (fx + tx) / 2, y: (fy + ty) / 2 - 10 };
+  };
+
+  // edges (with optional YES/NO labels)
   const edgeLayer = mk('g', { class:'flow__edges' });
   const edgeEls = new Map();
-  for (const [a, b] of edges) {
-    const na = nodes.find(n => n.id === a);
-    const nb = nodes.find(n => n.id === b);
+  for (const e of edges) {
+    const na = nodes.find(n => n.id === e.from);
+    const nb = nodes.find(n => n.id === e.to);
     if (!na || !nb) continue;
 
-    // Use proper anchors for each connection direction.
-    const s = anchorPoint(na, nb);
-    const t = anchorPoint(nb, na);
+    const s = anchorPoint(na, e.sideFrom);
+    const t = anchorPoint(nb, e.sideTo);
     const path = mk('path', {
       class: 'flow__edge',
-      d: curvePath(s, t),
+      d: orthoPath(s, t, e.sideFrom, e.sideTo),
       fill: 'none',
       'marker-end': 'url(#arrow)'
     });
     edgeLayer.appendChild(path);
-    edgeEls.set(`${a}->${b}`, path);
+    edgeEls.set(`${e.from}->${e.to}`, path);
+
+    if (e.label) {
+      const pos = labelPos(na, nb, e.sideFrom, e.sideTo);
+      const label = mk('text', { x: pos.x, y: pos.y, class: 'flow__edgeLabel', 'text-anchor': 'middle' });
+      label.textContent = e.label;
+      edgeLayer.appendChild(label);
+    }
   }
   svg.appendChild(edgeLayer);
 
@@ -232,7 +275,8 @@
     } else if (n.type === 'oval') {
       g.appendChild(mk('ellipse', { cx: n.x + n.w/2, cy: n.y + n.h/2, rx: n.w/2, ry: n.h/2, class: 'flow__oval' }));
     } else {
-      g.appendChild(mk('rect', { x:n.x, y:n.y, width:n.w, height:n.h, rx:'14', class: 'flow__rect' }));
+      // draw.io rounded rects
+      g.appendChild(mk('rect', { x:n.x, y:n.y, width:n.w, height:n.h, rx:'10', class: 'flow__rect' }));
     }
 
     // text (wrap-ish: split into 2 lines if too long)
@@ -250,21 +294,23 @@
       lines.push(n.title);
     }
 
-    const tx = n.x + 14;
-    const ty = n.y + (n.type === 'diamond' ? 46 : 38);
-    const text = mk('text', { x: tx, y: ty, class: 'flow__text' });
-    if (lines.length === 1) {
-      text.textContent = lines[0];
-    } else {
-      // center-ish for diamond: tweak x
-      text.setAttribute('x', String(n.x + n.w/2));
+    const text = mk('text', { class: 'flow__text' });
+    if (n.type === 'diamond') {
+      // center + wrap for diamonds
+      text.setAttribute('x', String(n.x + n.w / 2));
       text.setAttribute('text-anchor', 'middle');
-      const startY = n.y + 44;
+      const startY = n.y + 28;
       lines.slice(0, 3).forEach((ln, idx) => {
-        const tsp = mk('tspan', { x: n.x + n.w/2, y: startY + idx * 18 });
+        const tsp = mk('tspan', { x: n.x + n.w / 2, y: startY + idx * 16 });
         tsp.textContent = ln;
         text.appendChild(tsp);
       });
+    } else {
+      // draw.io centers text in shapes
+      text.setAttribute('x', String(n.x + n.w / 2));
+      text.setAttribute('y', String(n.y + n.h / 2 + 6));
+      text.setAttribute('text-anchor', 'middle');
+      text.textContent = lines[0];
     }
 
     g.appendChild(text);

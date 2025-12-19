@@ -336,9 +336,15 @@ h3 { font-size: 18px; }
   width: 100%;
   border-radius: 14px;
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.03);
+  /* Dark UI + draw.io vibes: subtle grid on a dark canvas */
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02)),
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    rgba(255,255,255,0.018);
+  background-size: auto, 24px 24px, 24px 24px, auto;
   /* Prevent “chopped” diagrams by reserving enough height */
-  aspect-ratio: 860 / 700;
+  aspect-ratio: 827 / 420;
 }
 .flow__panel {
   padding: 12px;
@@ -356,24 +362,24 @@ h3 { font-size: 18px; }
   line-height: 1.5;
 }
 .flow__rect {
-  fill: rgba(255, 255, 255, 0.045);
-  stroke: rgba(255, 255, 255, 0.16);
-  stroke-width: 2;
+  fill: rgba(255, 255, 255, 0.055);
+  stroke: rgba(255, 255, 255, 0.26);
+  stroke-width: 1.8;
 }
 .flow__diamond {
-  fill: rgba(255, 255, 255, 0.045);
-  stroke: rgba(255, 255, 255, 0.16);
-  stroke-width: 2;
+  fill: rgba(255, 255, 255, 0.055);
+  stroke: rgba(255, 255, 255, 0.26);
+  stroke-width: 1.8;
 }
 .flow__oval {
-  fill: rgba(255, 255, 255, 0.045);
-  stroke: rgba(255, 255, 255, 0.16);
-  stroke-width: 2;
+  fill: rgba(255, 255, 255, 0.055);
+  stroke: rgba(255, 255, 255, 0.26);
+  stroke-width: 1.8;
 }
 .flow__text {
   fill: rgba(255, 255, 255, 0.92);
-  font-weight: 900;
-  font-size: 16px;
+  font-weight: 850;
+  font-size: 13px;
 }
 .flow__sub {
   fill: rgba(255, 255, 255, 0.62);
@@ -382,33 +388,40 @@ h3 { font-size: 18px; }
 .flow__node { cursor: pointer; }
 .flow__node:focus { outline: none; }
 .flow__edge {
-  stroke: rgba(255, 255, 255, 0.26);
+  stroke: rgba(255, 255, 255, 0.32);
   stroke-width: 2;
+}
+.flow__edgeLabel {
+  fill: rgba(255, 255, 255, 0.90);
+  font-size: 13px;
+  font-weight: 900;
+  paint-order: stroke;
+  stroke: rgba(11, 16, 32, 0.85);
+  stroke-width: 3px;
 }
 .flow__node.is-active .flow__rect,
 .flow__node.is-active .flow__diamond,
 .flow__node.is-active .flow__oval {
-  stroke: rgba(79, 140, 255, 0.85);
-  fill: rgba(79, 140, 255, 0.10);
+  stroke: #2563eb;
+  fill: rgba(37, 99, 235, 0.18);
 }
-.flow__edge.is-path { stroke: rgba(79, 140, 255, 0.65) !important; }
+.flow__edge.is-path { stroke: #2563eb !important; }
 .flow__node.is-path .flow__rect,
 .flow__node.is-path .flow__diamond,
 .flow__node.is-path .flow__oval {
-  stroke: rgba(79, 140, 255, 0.55);
+  stroke: #3b82f6;
 }
 .flow__node.is-input .flow__rect,
 .flow__node.is-input .flow__diamond,
 .flow__node.is-input .flow__oval {
-  stroke: rgba(79, 140, 255, 0.95);
-  fill: rgba(79, 140, 255, 0.12);
+  stroke: #2563eb;
+  fill: rgba(37, 99, 235, 0.18);
 }
 .flow__node.is-state .flow__rect,
 .flow__node.is-state .flow__diamond,
 .flow__node.is-state .flow__oval {
-  stroke: rgba(79, 140, 255, 0.95);
-  fill: rgba(79, 140, 255, 0.12);
-  filter: drop-shadow(0 10px 24px rgba(79, 140, 255, 0.18));
+  stroke: #1d4ed8;
+  fill: rgba(29, 78, 216, 0.22);
 }
 /* Keep flowchart text consistent (uniform color) */
 .flow__node.is-input .flow__text,
