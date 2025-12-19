@@ -332,10 +332,13 @@ h3 { font-size: 18px; }
   display: grid;
   gap: 12px;
 }
-.flow__svg {
+.flow__stage {
+  position: relative;
   width: 100%;
   border-radius: 14px;
   border: 1px solid var(--border);
+  overflow: hidden;
+
   /* Dark UI + draw.io vibes: subtle grid on a dark canvas */
   background:
     linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02)),
@@ -343,8 +346,55 @@ h3 { font-size: 18px; }
     linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
     rgba(255,255,255,0.018);
   background-size: auto, 24px 24px, 24px 24px, auto;
+
   /* Prevent “chopped” diagrams by reserving enough height */
   aspect-ratio: 827 / 420;
+}
+.flow__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+}
+.flow__mxgraph {
+  display: none; /* legacy inline template (kept only for fallback) */
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.flow__overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* let the hitboxes opt-in to pointer events */
+  pointer-events: none;
+}
+.flow__hit { pointer-events: all; cursor: pointer; }
+
+.flow__hl {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 4;
+}
+.flow__hl.is-active,
+.flow__hl.is-input {
+  stroke: rgba(79, 140, 255, 0.95);
+}
+.flow__hl.is-path {
+  stroke: rgba(79, 140, 255, 0.70);
+}
+.flow__hl.is-state {
+  stroke: rgba(39, 211, 158, 0.92);
+}
+.flow__hlGlow.is-active,
+.flow__hlGlow.is-input,
+.flow__hlGlow.is-path,
+.flow__hlGlow.is-state {
+  filter: drop-shadow(0 10px 18px rgba(79, 140, 255, 0.22));
 }
 .flow__panel {
   padding: 12px;
@@ -361,71 +411,8 @@ h3 { font-size: 18px; }
   font-size: 13px;
   line-height: 1.5;
 }
-.flow__rect {
-  fill: rgba(255, 255, 255, 0.055);
-  stroke: rgba(255, 255, 255, 0.26);
-  stroke-width: 1.8;
-}
-.flow__diamond {
-  fill: rgba(255, 255, 255, 0.055);
-  stroke: rgba(255, 255, 255, 0.26);
-  stroke-width: 1.8;
-}
-.flow__oval {
-  fill: rgba(255, 255, 255, 0.055);
-  stroke: rgba(255, 255, 255, 0.26);
-  stroke-width: 1.8;
-}
-.flow__text {
-  fill: rgba(255, 255, 255, 0.92);
-  font-weight: 850;
-  font-size: 13px;
-}
-.flow__sub {
-  fill: rgba(255, 255, 255, 0.62);
-  font-size: 12px;
-}
-.flow__node { cursor: pointer; }
-.flow__node:focus { outline: none; }
-.flow__edge {
-  stroke: rgba(255, 255, 255, 0.32);
-  stroke-width: 2;
-}
-.flow__edgeLabel {
-  fill: rgba(255, 255, 255, 0.90);
-  font-size: 13px;
-  font-weight: 900;
-  paint-order: stroke;
-  stroke: rgba(11, 16, 32, 0.85);
-  stroke-width: 3px;
-}
-.flow__node.is-active .flow__rect,
-.flow__node.is-active .flow__diamond,
-.flow__node.is-active .flow__oval {
-  stroke: #2563eb;
-  fill: rgba(37, 99, 235, 0.18);
-}
-.flow__edge.is-path { stroke: #2563eb !important; }
-.flow__node.is-path .flow__rect,
-.flow__node.is-path .flow__diamond,
-.flow__node.is-path .flow__oval {
-  stroke: #3b82f6;
-}
-.flow__node.is-input .flow__rect,
-.flow__node.is-input .flow__diamond,
-.flow__node.is-input .flow__oval {
-  stroke: #2563eb;
-  fill: rgba(37, 99, 235, 0.18);
-}
-.flow__node.is-state .flow__rect,
-.flow__node.is-state .flow__diamond,
-.flow__node.is-state .flow__oval {
-  stroke: #1d4ed8;
-  fill: rgba(29, 78, 216, 0.22);
-}
-/* Keep flowchart text consistent (uniform color) */
-.flow__node.is-input .flow__text,
-.flow__node.is-state .flow__text { fill: rgba(255, 255, 255, 0.92); }
+/* We now render the base diagram via the draw.io viewer template,
+   and only use an overlay for interactive highlights. */
 
 /* How it Works: demo FSM */
 .demo-fsm {

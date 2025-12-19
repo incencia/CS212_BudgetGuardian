@@ -15,9 +15,18 @@
     </div>
 
     <div class="flow">
-      <svg class="flow__svg" id="flow_svg" viewBox="0 0 827 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Budget Guardian FSM flowchart">
-        <!-- JS draws nodes/edges -->
-      </svg>
+      <!-- Exact draw.io export template -->
+      <div class="flow__stage" aria-label="Budget Guardian FSM flowchart">
+        <iframe class="flow__frame" src="{{ url_for('static', filename='drawio/how-it-works.drawio.html') }}" title="How it works flowchart"></iframe>
+        <div
+          class="mxgraph flow__mxgraph"
+          style="max-width:100%;border:1px solid transparent;"
+          data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;dark-mode&quot;:&quot;auto&quot;,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; agent=\&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36\&quot; version=\&quot;29.2.7\&quot;&gt;\n  &lt;diagram name=\&quot;Page-1\&quot; id=\&quot;zmd8Ij-SWt5S09DOo-vj\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1234\&quot; dy=\&quot;859\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; background=\&quot;none\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-21\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;F49Qtn8B5LXQ2rraOSNR-1\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;\&quot; target=\&quot;F49Qtn8B5LXQ2rraOSNR-2\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-1\&quot; parent=\&quot;1\&quot; style=\&quot;ellipse;whiteSpace=wrap;html=1;\&quot; value=\&quot;start\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;80\&quot; width=\&quot;120\&quot; x=\&quot;70\&quot; y=\&quot;10\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-22\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;F49Qtn8B5LXQ2rraOSNR-2\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;\&quot; target=\&quot;F49Qtn8B5LXQ2rraOSNR-3\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-2\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;\&quot; value=\&quot;input budget\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;60\&quot; width=\&quot;120\&quot; x=\&quot;70\&quot; y=\&quot;170\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-23\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;F49Qtn8B5LXQ2rraOSNR-3\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; target=\&quot;F49Qtn8B5LXQ2rraOSNR-4\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-3\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;\&quot; value=\&quot;input spending\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;60\&quot; width=\&quot;120\&quot; x=\&quot;70\&quot; y=\&quot;310\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-4\&quot; parent=\&quot;1\&quot; style=\&quot;rhombus;whiteSpace=wrap;html=1;\&quot; value=\&quot;is spending &amp;amp;lt;80% of budget?\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;80\&quot; width=\&quot;80\&quot; x=\&quot;374\&quot; y=\&quot;12\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-39\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;F49Qtn8B5LXQ2rraOSNR-12\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; target=\&quot;F49Qtn8B5LXQ2rraOSNR-20\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-12\&quot; parent=\&quot;1\&quot; style=\&quot;rhombus;whiteSpace=wrap;html=1;\&quot; value=\&quot;is spending≤ 105% of budget?\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;80\&quot; width=\&quot;80\&quot; x=\&quot;374\&quot; y=\&quot;212\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-25\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;F49Qtn8B5LXQ2rraOSNR-13\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; target=\&quot;F49Qtn8B5LXQ2rraOSNR-12\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-29\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;F49Qtn8B5LXQ2rraOSNR-13\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; target=\&quot;F49Qtn8B5LXQ2rraOSNR-15\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-13\&quot; parent=\&quot;1\&quot; style=\&quot;rhombus;whiteSpace=wrap;html=1;\&quot; value=\&quot;is spending ≤ 100% of budget?\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;80\&quot; width=\&quot;80\&quot; x=\&quot;374\&quot; y=\&quot;112\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-14\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;\&quot; value=\&quot;S0\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;60\&quot; width=\&quot;120\&quot; x=\&quot;600\&quot; y=\&quot;22\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-15\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;\&quot; value=\&quot;s1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;60\&quot; width=\&quot;120\&quot; x=\&quot;610\&quot; y=\&quot;122\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-17\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;\&quot; value=\&quot;s3\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;60\&quot; width=\&quot;120\&quot; x=\&quot;610\&quot; y=\&quot;322\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-20\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;\&quot; value=\&quot;s2\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;60\&quot; width=\&quot;120\&quot; x=\&quot;610\&quot; y=\&quot;222\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-24\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;F49Qtn8B5LXQ2rraOSNR-4\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0.11;entryDx=0;entryDy=0;entryPerimeter=0;\&quot; target=\&quot;F49Qtn8B5LXQ2rraOSNR-13\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-26\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;F49Qtn8B5LXQ2rraOSNR-12\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; target=\&quot;F49Qtn8B5LXQ2rraOSNR-17\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;Array as=\&quot;points\&quot;&gt;\n              &lt;mxPoint x=\&quot;418\&quot; y=\&quot;292\&quot; /&gt;\n              &lt;mxPoint x=\&quot;418\&quot; y=\&quot;352\&quot; /&gt;\n            &lt;/Array&gt;\n            &lt;mxPoint x=\&quot;418\&quot; y=\&quot;320\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-28\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;F49Qtn8B5LXQ2rraOSNR-4\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.06;entryY=0.58;entryDx=0;entryDy=0;entryPerimeter=0;\&quot; target=\&quot;F49Qtn8B5LXQ2rraOSNR-14\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-40\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;\&quot; value=\&quot;NO\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;480\&quot; y=\&quot;325\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-41\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;\&quot; value=\&quot;NO\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;400\&quot; y=\&quot;185\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-42\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;\&quot; value=\&quot;NO\&quot; vertex=\&quot;1\&quot;>
+          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;414\&quot; y=\&quot;82\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-46\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;\&quot; value=\&quot;YES\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;480\&quot; y=\&quot;215\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-47\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;\&quot; value=\&quot;YES\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;480\&quot; y=\&quot;112\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;F49Qtn8B5LXQ2rraOSNR-48\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;\&quot; value=\&quot;YES\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;480\&quot; y=\&quot;22\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+
+        <!-- Overlay for interactive highlights + click targets (the base diagram comes from draw.io) -->
+        <svg class="flow__overlay" id="flow_overlay" viewBox="0 0 827 420" preserveAspectRatio="xMidYMid meet" role="presentation" aria-hidden="true"></svg>
+      </div>
 
       <div class="flow__panel">
         <div class="flow__panelTitle" id="flow_title">Click a node</div>
@@ -90,46 +99,26 @@
 
 <script>
 (() => {
-  // ---- Flowchart ----
-  const svg = document.getElementById('flow_svg');
+  // ---- Flowchart (draw.io template + overlay highlights) ----
+  const svg = document.getElementById('flow_overlay');
   const titleEl = document.getElementById('flow_title');
   const bodyEl = document.getElementById('flow_body');
   if (!svg || !titleEl || !bodyEl) return;
 
-  // FSM-only flowchart (draw.io exported look):
-  // Use the same grid-ish sizing/spacing as the provided draw.io diagram.
+  // Node hitboxes + highlight overlays matching the draw.io diagram's coordinates.
   const nodes = [
-    // Left column
-    { id: 'start', type: 'oval',   x: 70,  y: 10,  w: 120, h: 80, title: 'start', desc: 'Begin the FSM evaluation.' },
-    { id: 'budget',type: 'rect',   x: 70,  y: 170, w: 120, h: 60, title: 'input budget', desc: 'Enter the budget (₱). This is the reference limit.' },
-    { id: 'spent', type: 'rect',   x: 70,  y: 310, w: 120, h: 60, title: 'input spending', desc: 'Enter the spending (₱). This is what we compare against the budget.' },
+    { id: 'start', type: 'oval',   x: 70,  y: 10,  w: 120, h: 80, title: 'Start', desc: 'Begin the FSM evaluation.' },
+    { id: 'budget',type: 'rect',   x: 70,  y: 170, w: 120, h: 60, title: 'Input budget', desc: 'Enter the budget (₱). This is the reference limit.' },
+    { id: 'spent', type: 'rect',   x: 70,  y: 310, w: 120, h: 60, title: 'Input spending', desc: 'Enter the spending (₱). This is what we compare against the budget.' },
 
-    // Decision ladder (top -> bottom)
-    { id: 'd80',   type: 'diamond',x: 374, y: 12,  w: 80,  h: 80, title: 'is spending < 80% of budget?', desc: 'YES → S3. NO → next decision.' },
-    { id: 'd100',  type: 'diamond',x: 374, y: 112, w: 80,  h: 80, title: 'is spending ≤ 100% of budget?', desc: 'YES → S0. NO → next decision.' },
-    { id: 'd105',  type: 'diamond',x: 374, y: 212, w: 80,  h: 80, title: 'is spending ≤ 105% of budget?', desc: 'YES → S1. NO → S2.' },
+    { id: 'd80',   type: 'diamond',x: 374, y: 12,  w: 80,  h: 80, title: 'Is spending < 80% of budget?', desc: 'If YES → S3. If NO → next decision.' },
+    { id: 'd100',  type: 'diamond',x: 374, y: 112, w: 80,  h: 80, title: 'Is spending ≤ 100% of budget?', desc: 'If YES → S0. If NO → next decision.' },
+    { id: 'd105',  type: 'diamond',x: 374, y: 212, w: 80,  h: 80, title: 'Is spending ≤ 105% of budget?', desc: 'If YES → S1. If NO → S2.' },
 
-    // States column (same sizing as draw.io export)
     { id: 'S0',    type: 'state',  x: 600, y: 22,  w: 120, h: 60, title: 'S0', desc: 'On track: spending is within budget.' },
     { id: 'S1',    type: 'state',  x: 610, y: 122, w: 120, h: 60, title: 'S1', desc: 'Slight overspend: spending is up to 105% of budget.' },
     { id: 'S2',    type: 'state',  x: 610, y: 222, w: 120, h: 60, title: 'S2', desc: 'Major overspend: spending is over 105% of budget.' },
     { id: 'S3',    type: 'state',  x: 610, y: 322, w: 120, h: 60, title: 'S3', desc: 'Underspend: spending is under 80% of budget.' },
-  ];
-
-  // Edges with explicit anchor sides (orthogonal, draw.io-like).
-  const edges = [
-    { from: 'start',  to: 'budget', sideFrom: 'bottom', sideTo: 'top' },
-    { from: 'budget', to: 'spent',  sideFrom: 'bottom', sideTo: 'top' },
-    { from: 'spent',  to: 'd80',    sideFrom: 'right',  sideTo: 'left' },
-
-    { from: 'd80',    to: 'S3',     sideFrom: 'right',  sideTo: 'left',  label: 'YES' },
-    { from: 'd80',    to: 'd100',   sideFrom: 'bottom', sideTo: 'top',   label: 'NO' },
-
-    { from: 'd100',   to: 'S0',     sideFrom: 'right',  sideTo: 'left',  label: 'YES' },
-    { from: 'd100',   to: 'd105',   sideFrom: 'bottom', sideTo: 'top',   label: 'NO' },
-
-    { from: 'd105',   to: 'S1',     sideFrom: 'right',  sideTo: 'left',  label: 'YES' },
-    { from: 'd105',   to: 'S2',     sideFrom: 'bottom', sideTo: 'left',  label: 'NO' },
   ];
 
   const NS = 'http://www.w3.org/2000/svg';
@@ -139,217 +128,75 @@
     return el;
   };
 
-  // defs (arrow)
-  const defs = mk('defs');
-  const marker = mk('marker', { id:'arrow', viewBox:'0 0 10 10', refX:'9', refY:'5', markerWidth:'8', markerHeight:'8', orient:'auto-start-reverse' });
-  marker.appendChild(mk('path', { d:'M 0 0 L 10 5 L 0 10 z', fill:'rgba(255,255,255,0.85)' }));
-  defs.appendChild(marker);
-  svg.appendChild(defs);
+  const pad = 6; // highlight padding around shapes
+  const hitLayer = mk('g');
+  const hlLayer = mk('g');
+  svg.appendChild(hlLayer);
+  svg.appendChild(hitLayer);
 
-  const center = (n) => ({ cx: n.x + n.w / 2, cy: n.y + n.h / 2 });
+  const hlEls = new Map();
+  const hitEls = new Map();
 
-  const anchorPoint = (node, side) => {
-    // Explicit side anchors make the diagram deterministic & clean.
-    if (node.type === 'diamond') {
-      if (side === 'left') return { x: node.x, y: node.y + node.h / 2 };
-      if (side === 'right') return { x: node.x + node.w, y: node.y + node.h / 2 };
-      if (side === 'top') return { x: node.x + node.w / 2, y: node.y };
-      if (side === 'bottom') return { x: node.x + node.w / 2, y: node.y + node.h };
-    }
-
-    if (node.type === 'oval') {
-      if (side === 'left') return { x: node.x, y: node.y + node.h / 2 };
-      if (side === 'right') return { x: node.x + node.w, y: node.y + node.h / 2 };
-      if (side === 'top') return { x: node.x + node.w / 2, y: node.y };
-      if (side === 'bottom') return { x: node.x + node.w / 2, y: node.y + node.h };
-    }
-
-    // rect/state fallback
-    if (side === 'left') return { x: node.x, y: node.y + node.h / 2 };
-    if (side === 'right') return { x: node.x + node.w, y: node.y + node.h / 2 };
-    if (side === 'top') return { x: node.x + node.w / 2, y: node.y };
-    if (side === 'bottom') return { x: node.x + node.w / 2, y: node.y + node.h };
-    return center(node);
+  const diamondPts = (n, extra=0) => {
+    const cx = n.x + n.w / 2;
+    const cy = n.y + n.h / 2;
+    return [
+      `${cx} ${n.y - extra}`,
+      `${n.x + n.w + extra} ${cy}`,
+      `${cx} ${n.y + n.h + extra}`,
+      `${n.x - extra} ${cy}`,
+    ].join(' ');
   };
 
-  const orthoPath = (s, t, sideFrom, sideTo) => {
-    // Draw.io-like orthogonal routing: stub out, then 1-2 bends, then stub in.
-    const stub = 22;
-    const outDir = (side) => {
-      if (side === 'right') return { x: 1, y: 0 };
-      if (side === 'left') return { x: -1, y: 0 };
-      if (side === 'bottom') return { x: 0, y: 1 };
-      if (side === 'top') return { x: 0, y: -1 };
-      return { x: 0, y: 0 };
-    };
-
-    const d1 = outDir(sideFrom);
-    const d2 = outDir(sideTo);
-
-    const p0 = { x: s.x, y: s.y };
-    const p1 = { x: s.x + d1.x * stub, y: s.y + d1.y * stub };
-    const p3 = { x: t.x + d2.x * stub, y: t.y + d2.y * stub };
-    const p4 = { x: t.x, y: t.y };
-
-    // Choose routing axis based on the source exit direction.
-    const horizFirst = (sideFrom === 'left' || sideFrom === 'right');
-    const p2 = horizFirst ? { x: p3.x, y: p1.y } : { x: p1.x, y: p3.y };
-
-    // Build path segments (avoid zero-length segments)
-    const pts = [p0, p1, p2, p3, p4].filter((p, idx, arr) => {
-      if (idx === 0) return true;
-      const prev = arr[idx - 1];
-      return !(Math.abs(prev.x - p.x) < 0.1 && Math.abs(prev.y - p.y) < 0.1);
-    });
-
-    return pts.reduce((d, p, idx) => d + (idx === 0 ? `M ${p.x} ${p.y}` : ` L ${p.x} ${p.y}`), '');
+  const makeHighlight = (n) => {
+    if (n.type === 'diamond') return mk('polygon', { points: diamondPts(n, pad), class: 'flow__hl flow__hlGlow', 'data-id': n.id });
+    if (n.type === 'oval') return mk('ellipse', { cx: n.x + n.w/2, cy: n.y + n.h/2, rx: n.w/2 + pad, ry: n.h/2 + pad, class: 'flow__hl flow__hlGlow', 'data-id': n.id });
+    return mk('rect', { x: n.x - pad, y: n.y - pad, width: n.w + pad*2, height: n.h + pad*2, rx: 12, class: 'flow__hl flow__hlGlow', 'data-id': n.id });
   };
 
-  const labelPos = (fromNode, toNode, sideFrom, sideTo) => {
-    // Place YES/NO similar to the draw.io export: near the branch, not the midpoint.
-    const fx = fromNode.x + fromNode.w / 2;
-    const fy = fromNode.y + fromNode.h / 2;
-    const tx = toNode.x + toNode.w / 2;
-    const ty = toNode.y + toNode.h / 2;
-    const horiz = Math.abs(tx - fx) >= Math.abs(ty - fy);
-
-    // Downward (NO) between diamonds
-    if (!horiz && sideFrom === 'bottom' && sideTo === 'top') {
-      return { x: fx, y: (fromNode.y + fromNode.h + toNode.y) / 2 - 6 };
-    }
-
-    // Rightward (YES) into state boxes
-    if (horiz && sideFrom === 'right' && sideTo === 'left') {
-      return { x: fromNode.x + fromNode.w + 26, y: fromNode.y + fromNode.h / 2 - 8 };
-    }
-
-    // Fallback
-    return { x: (fx + tx) / 2, y: (fy + ty) / 2 - 10 };
+  const makeHitbox = (n) => {
+    if (n.type === 'diamond') return mk('polygon', { points: diamondPts(n, 0), class: 'flow__hit', fill: 'transparent', stroke: 'transparent', 'data-id': n.id });
+    if (n.type === 'oval') return mk('ellipse', { cx: n.x + n.w/2, cy: n.y + n.h/2, rx: n.w/2, ry: n.h/2, class: 'flow__hit', fill: 'transparent', stroke: 'transparent', 'data-id': n.id });
+    return mk('rect', { x: n.x, y: n.y, width: n.w, height: n.h, rx: 10, class: 'flow__hit', fill: 'transparent', stroke: 'transparent', 'data-id': n.id });
   };
 
-  // edges (with optional YES/NO labels)
-  const edgeLayer = mk('g', { class:'flow__edges' });
-  const edgeEls = new Map();
-  for (const e of edges) {
-    const na = nodes.find(n => n.id === e.from);
-    const nb = nodes.find(n => n.id === e.to);
-    if (!na || !nb) continue;
-
-    const s = anchorPoint(na, e.sideFrom);
-    const t = anchorPoint(nb, e.sideTo);
-    const path = mk('path', {
-      class: 'flow__edge',
-      d: orthoPath(s, t, e.sideFrom, e.sideTo),
-      fill: 'none',
-      'marker-end': 'url(#arrow)'
-    });
-    edgeLayer.appendChild(path);
-    edgeEls.set(`${e.from}->${e.to}`, path);
-
-    if (e.label) {
-      const pos = labelPos(na, nb, e.sideFrom, e.sideTo);
-      const label = mk('text', { x: pos.x, y: pos.y, class: 'flow__edgeLabel', 'text-anchor': 'middle' });
-      label.textContent = e.label;
-      edgeLayer.appendChild(label);
-    }
-  }
-  svg.appendChild(edgeLayer);
-
-  // nodes
-  const nodeLayer = mk('g', { class:'flow__nodes' });
-  const nodeEls = new Map();
-  for (const n of nodes) {
-    const g = mk('g', { class:'flow__node', tabindex:'0', 'data-id':n.id });
-
-    // shape
-    if (n.type === 'diamond') {
-      const cx = n.x + n.w / 2;
-      const cy = n.y + n.h / 2;
-      const pts = [
-        `${cx} ${n.y}`,                    // top
-        `${n.x + n.w} ${cy}`,              // right
-        `${cx} ${n.y + n.h}`,              // bottom
-        `${n.x} ${cy}`,                    // left
-      ].join(' ');
-      g.appendChild(mk('polygon', { points: pts, class: 'flow__diamond' }));
-    } else if (n.type === 'oval') {
-      g.appendChild(mk('ellipse', { cx: n.x + n.w/2, cy: n.y + n.h/2, rx: n.w/2, ry: n.h/2, class: 'flow__oval' }));
-    } else {
-      // draw.io rounded rects
-      g.appendChild(mk('rect', { x:n.x, y:n.y, width:n.w, height:n.h, rx:'10', class: 'flow__rect' }));
-    }
-
-    // text (wrap-ish: split into 2 lines if too long)
-    const lines = [];
-    if (n.type === 'diamond') {
-      // short-wrap diamond text
-      const parts = n.title.split(' ');
-      let cur = '';
-      for (const p of parts) {
-        const next = (cur ? cur + ' ' : '') + p;
-        if (next.length > 18 && cur) { lines.push(cur); cur = p; } else { cur = next; }
-      }
-      if (cur) lines.push(cur);
-    } else {
-      lines.push(n.title);
-    }
-
-    const text = mk('text', { class: 'flow__text' });
-    if (n.type === 'diamond') {
-      // center + wrap for diamonds
-      text.setAttribute('x', String(n.x + n.w / 2));
-      text.setAttribute('text-anchor', 'middle');
-      const startY = n.y + 28;
-      lines.slice(0, 3).forEach((ln, idx) => {
-        const tsp = mk('tspan', { x: n.x + n.w / 2, y: startY + idx * 16 });
-        tsp.textContent = ln;
-        text.appendChild(tsp);
-      });
-    } else {
-      // draw.io centers text in shapes
-      text.setAttribute('x', String(n.x + n.w / 2));
-      text.setAttribute('y', String(n.y + n.h / 2 + 6));
-      text.setAttribute('text-anchor', 'middle');
-      text.textContent = lines[0];
-    }
-
-    g.appendChild(text);
-    nodeLayer.appendChild(g);
-    nodeEls.set(n.id, g);
-
-    const activate = () => {
-      for (const el of nodeEls.values()) el.classList.remove('is-active');
-      g.classList.add('is-active');
+  const setActive = (id) => {
+    for (const el of hlEls.values()) el.classList.remove('is-active');
+    hlEls.get(id)?.classList.add('is-active');
+    const n = nodes.find(x => x.id === id);
+    if (n) {
       titleEl.textContent = n.title;
       bodyEl.textContent = n.desc;
-    };
+    }
+  };
 
-    g.addEventListener('click', activate);
-    g.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        activate();
-      }
+  for (const n of nodes) {
+    const hl = makeHighlight(n);
+    const hit = makeHitbox(n);
+    hlLayer.appendChild(hl);
+    hitLayer.appendChild(hit);
+    hlEls.set(n.id, hl);
+    hitEls.set(n.id, hit);
+    hit.addEventListener('click', () => {
+      setActive(n.id);
+      if (n.id === 'budget') { budgetInput?.focus(); budgetInput?.select?.(); }
+      if (n.id === 'spent') { spentInput?.focus(); spentInput?.select?.(); }
     });
   }
-  svg.appendChild(nodeLayer);
 
-  // Default selection
-  nodeEls.get('start')?.dispatchEvent(new Event('click'));
+  setActive('start');
 
   const clearHighlights = () => {
-    for (const el of nodeEls.values()) {
+    for (const el of hlEls.values()) {
       el.classList.remove('is-path');
       el.classList.remove('is-input');
       el.classList.remove('is-state');
     }
-    for (const el of edgeEls.values()) el.classList.remove('is-path');
   };
 
-  const setPath = (ids, edgePairs=[]) => {
+  const setPath = (ids) => {
     clearHighlights();
-    for (const id of ids) nodeEls.get(id)?.classList.add('is-path');
-    for (const [a,b] of edgePairs) edgeEls.get(`${a}->${b}`)?.classList.add('is-path');
+    for (const id of ids) hlEls.get(id)?.classList.add('is-path');
   };
 
   // ---- FSM demo ----
@@ -375,15 +222,7 @@
   const fmt = (n) => (Number.isFinite(n) ? n.toFixed(2) : '0.00');
   let inputFocus = null; // 'budget' | 'spent' | null
 
-  const activateNodeById = (id) => {
-    const n = nodes.find(x => x.id === id);
-    const g = nodeEls.get(id);
-    if (!n || !g) return;
-    for (const el of nodeEls.values()) el.classList.remove('is-active');
-    g.classList.add('is-active');
-    titleEl.textContent = n.title;
-    bodyEl.textContent = n.desc;
-  };
+  const activateNodeById = (id) => setActive(id);
 
   const setLinkedRow = (which) => {
     budgetRow?.classList.toggle('is-linked', which === 'budget');
@@ -426,33 +265,28 @@
 
     stateEl.className = 'badge ' + (state === 'S0' || state === 'S3' ? 'badge--good' : 'badge--danger');
 
-    // Flowchart highlighting (FSM-only)
+    // Flowchart highlighting (nodes only; base diagram shows the arrows)
     const base = ['start', 'budget', 'spent'];
     let path = [];
-    let edgesOn = [['start','budget'],['budget','spent'],['spent','d80']];
 
     if (state === 'S3') {
       path = [...base, 'd80', 'S3'];
-      edgesOn = [...edgesOn, ['d80','S3']];
     } else if (state === 'S0') {
       path = [...base, 'd80', 'd100', 'S0'];
-      edgesOn = [...edgesOn, ['d80','d100'], ['d100','S0']];
     } else if (state === 'S1') {
       path = [...base, 'd80', 'd100', 'd105', 'S1'];
-      edgesOn = [...edgesOn, ['d80','d100'], ['d100','d105'], ['d105','S1']];
     } else {
       path = [...base, 'd80', 'd100', 'd105', 'S2'];
-      edgesOn = [...edgesOn, ['d80','d100'], ['d100','d105'], ['d105','S2']];
     }
 
-    setPath(path, edgesOn);
+    setPath(path);
 
     // Highlight currently interacted input node
-    if (inputFocus === 'budget') nodeEls.get('budget')?.classList.add('is-input');
-    if (inputFocus === 'spent') nodeEls.get('spent')?.classList.add('is-input');
+    if (inputFocus === 'budget') hlEls.get('budget')?.classList.add('is-input');
+    if (inputFocus === 'spent') hlEls.get('spent')?.classList.add('is-input');
 
     // Highlight resulting state box
-    nodeEls.get(state)?.classList.add('is-state');
+    hlEls.get(state)?.classList.add('is-state');
 
     // Keep the right-hand inputs visually “linked” to the flowchart
     setLinkedRow(inputFocus);
@@ -474,16 +308,10 @@
   budgetInput.addEventListener('input', () => setFocus('budget'));
   spentInput.addEventListener('input', () => setFocus('spent'));
 
-  // Flowchart -> input (click the flow nodes)
-  const focusInputForNode = (id) => {
-    if (id === 'budget') { budgetInput?.focus(); budgetInput?.select?.(); }
-    if (id === 'spent') { spentInput?.focus(); spentInput?.select?.(); }
-  };
-
-  nodeEls.get('budget')?.addEventListener('click', () => focusInputForNode('budget'));
-  nodeEls.get('spent')?.addEventListener('click', () => focusInputForNode('spent'));
-
   compute();
 })();
 </script>
+
+<!-- draw.io viewer script (required by the template) -->
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
 {% endblock %}
